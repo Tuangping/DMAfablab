@@ -66,13 +66,13 @@ function draw() {
     //    pop();
     ////////
     noStroke();
-    fill(color, 0, 0, alpha);
-    ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 30, 100, 100);
-    console.log("video time: "+round(scene[state].time()));
     console.log("isPlaying: "+playing);
     if (state==1){
         doThisOnLocation(locationData);
+        fill(color, 0, 0, alpha);
+        ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 30, 100, 100);
         if(playing) {
+            console.log("video time: "+round(scene[state].time()))
             //        tint(255, 100);
             //        image(pic1, windowWidth / 2, 350,1000,750);
             textAlign(CENTER);
@@ -85,15 +85,23 @@ function draw() {
                 if(scene[state].time()==scene[state].duration()){
                     console.log("state=2");
                     state=2;
+                    alpha = 100;
                     playing=false;
                 }
             }
         }
     }else if (state==2){
-        password.remove();
-        text(rotateDirection, windowWidth / 2, windowHeight - 50);
-        text(playing + ": " + round(scene2.time()), 50, 50);
+        fill(color, 0, 0, alpha);
+        ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 30, 100, 100);
         rotateWheel();
+        console.log("in 2");
+        console.log("video time: "+round(scene[state].time()));
+        password.remove();
+        fill(color, 0, 0, 255);
+        textSize(50);
+        text(rotateDirection, windowWidth-200, windowHeight/2 - 50);
+        text(playing + ": " + round(scene[state].time()), 150, 150);
+
     }
 
 }//password is 34118 (LAT 34.07603371, -118.44086627)
@@ -111,7 +119,6 @@ function touchStarted() {
         alpha = 100;
         scene[state].stop();
     } else {
-
         scene[state].play();
     }
     playing = !playing;
