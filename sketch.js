@@ -93,17 +93,15 @@ function draw() {
     }else if (state==2){
         fill(color, 0, 0, alpha);
         ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 30, 100, 100);
-        rotateWheel();
         console.log("in 2");
         console.log("video time: "+round(scene[state].time()));
         password.remove();
-        fill(color, 0, 0, 255);
-        textSize(50);
-        text(rotateDirection, windowWidth-200, windowHeight/2 - 50);
-        text(playing + ": " + round(scene[state].time()), 150, 150);
-
+            rotateWheel();
+            fill(color, 0, 0, 255);
+            textSize(50);
+            text(rotateDirection, windowWidth-200, windowHeight/2 - 50);
+            text(playing + ": " + round(scene[state].time()), 150, 150);
     }
-
 }//password is 34118 (LAT 34.07603371, -118.44086627)
 function touchStarted() {
     if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
