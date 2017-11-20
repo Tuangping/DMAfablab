@@ -84,9 +84,12 @@ function draw() {
             if(lat>=33.5&&lat<34.5&&lon>=-119&&lon<-118){
                 if(scene[state].time()==scene[state].duration()){
                     console.log("state=2");
+                    scene[state].stop();
                     state=2;
                     alpha = 100;
-                    scene[state].stop();
+                    image(scene[state],windowWidth / 2, windowHeight / 2);
+                    scene[state].play();
+                    scene[state].pause();
                     playing=false;
                 }
             }
