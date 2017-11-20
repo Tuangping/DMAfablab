@@ -81,8 +81,8 @@ function draw() {
             if(lat>=33.5&&lat<34.5&&lon>=-119&&lon<-118){
                 if(scene[state].time()==scene[state].duration()){
                     console.log("state=2");
-                    playing=false;
                     state=2;
+                    playing=false;
                 }
             }
         }
@@ -102,11 +102,10 @@ function touchStarted() {
     }
 
     if (playing) {
-
-        scene[state].stop();
-
-    } else {
         alpha = 100;
+        scene[state].stop();
+    } else {
+       
         scene[state].play();
     }
     playing = !playing;
@@ -124,10 +123,9 @@ function mousePressed() {
     }
 
     if (playing) {
-
+        alpha = 100;
         scene[state].stop();
     } else {
-        alpha = 100;
         scene[state].play();
     }
     playing = !playing;
