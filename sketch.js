@@ -175,7 +175,7 @@ function rotateWheel() {
         rotateDirection="Next, adjust the blade's height.";
         scene[state].pause();
         alpha=100;
-        if(mouseIsPressed){
+        if(mouseIsPressed || touchIsDown){
             state++;
             console.log(state);
         }
