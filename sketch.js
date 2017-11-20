@@ -86,6 +86,7 @@ function draw() {
                     console.log("state=2");
                     scene[state].pause();
                     state=2;
+                    image(scene[state],windowWidth / 2, windowHeight / 2);
                     alpha = 100;
                     playing=false;
                 }
