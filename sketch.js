@@ -1,54 +1,86 @@
 var scene =[];
-var pic1,num;
+var pic1,state,password;
 var color, alpha, playing;
+var lat,lon;
+var locationData;
+
+function preload(){
+    locationData =  getCurrentPosition();
+}
 
 function setup() {
     createCanvas(innerWidth, innerHeight);
+    console.log(locationData.latitude);
+    navigator.geolocation.watchPosition(doThisOnLocation);   
     background("RED");
-    textSize(30);
+    textAlign(CENTER);
+    textSize(50);
     fill("BLACK");
     noStroke();
     text("LOADING...", innerWidth/2,innerHeight/2);
     for(var i=1; i<2; i++){
-    console.log("video loaded: "+i);
-    scene[i] = document.querySelector('video');
-    scene[i] = createVideo(['scenes/scene'+i+'.webm', 'scenes/scene'+i+'.mp4']);
-    scene[i].attribute('playsinline', '');
-    window.enableInlineVideo(scene[i]);
-    scene[i].hide();
-}
-     //to hide the extra video on html canvas
+        console.log("video loaded: "+i);
+        scene[i] = document.querySelector('video');
+        scene[i] = createVideo(['scenes/scene'+i+'.webm', 'scenes/scene'+i+'.mp4']);
+        scene[i].attribute('playsinline', '');
+        window.enableInlineVideo(scene[i]);
+        scene[i].hide();
+    }
+    //to hide the extra video on html canvas
     scene[1].play() //to show first frame of the video
     scene[1].pause(); //to stop it from playing right away
+    state=1;
     pic1 = loadImage("elements/numpad.png");
     playing = false;
     imageMode(CENTER);
     angleMode(DEGREES);
     color = 255;
     alpha = 100;
+   
+}
+function doThisOnLocation(position){
+    fill(0);
+    console.log("lat: " + position.latitude);
+    console.log("long: " + position.longitude);
+    lat=position.latitude;
+    lon=position.longitude;
+    text("Latitude: "+lat,windowWidth/2,200);
+    text("Longitude: "+lon,windowWidth/2,250);
 }
 
 function draw() {
-    noStroke();
+//    background("RED");
     push();
     translate(windowWidth / 2, windowHeight / 2);
     noTint();
     rotate(90);
-    image(scene[1], 0, 0);
+    console.log("playing");
+    image(scene[state], 0, 0);
     pop();
-
-    if (playing) {
-        tint(255, 100);
-        image(pic1, windowWidth / 2, 350,1000,750);
-    }
-
+    ////////
+    noStroke();
     fill(color, 0, 0, alpha);
     ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 30, 100, 100);
-    console.log("video time: "+round(scene[1].time()));
+    console.log("video time: "+round(scene[state].time()));
+    console.log("isPlaying: "+playing);
+    if (state==1&&playing) {
+//        tint(255, 100);
+//        image(pic1, windowWidth / 2, 350,1000,750);
+        textAlign(CENTER);
+        textSize(16);
+        fill("YELLOW");
+        text("if cannot be at the location, type in password here", windowWidth/2, windowHeight/2-100);
+        password=createInput();
+        password.position(windowWidth/2-100,windowHeight/2-50);
+        password.attribute('size','20');
+//        password.attribute('maxlength','5');
+        doThisOnLocation(locationData);
+    }
 
-
+//    text("latitude = "+nf(position.coords.latitude, 2, 6), windowWidth/2,400);
+//    text("longitude = "+nf(position.coords.longitude, 3, 6),windowWidth/2,600);
 }
-
+//password is 34118 (LAT 34.07603371, -118.44086627)
 function touchStarted() {
     if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
         if (mouseY < (windowHeight / 2) + 80 && mouseY > (windowHeight / 2) - 80) {
@@ -61,24 +93,14 @@ function touchStarted() {
 
     if (playing) {
         scene[1].stop();
+
     } else {
-       scene[1].play();
+        scene[1].play();
         scene[1].time(4);
 
     }
     playing = !playing;
-
     return false;
-}
-
-function touchMoved() {
-    // if (touchX > (windowWidth / 2) - 100 && touchX < (windowWidth / 2)+50) {
-    //   if(touchY < (windowHeight/2)+80 && touchY>(windowHeight/2)-80){
-    //   console.log("hit");
-    //      color=100;
-    //   }
-    // }
-
 }
 
 function mousePressed() {
@@ -95,7 +117,7 @@ function mousePressed() {
         scene[1].stop();
     } else {
         scene[1].play();
-       scene[1].time(4);
+        scene[1].time(4);
 
     }
     playing = !playing;
