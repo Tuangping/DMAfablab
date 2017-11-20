@@ -1,8 +1,12 @@
 var scene =[];
 var pic1,state,password;
 var color, alpha, playing;
-var lat,lon;
-var locationData;
+var lat,lon,locationData;
+
+// scene2-3
+var blade, wheel, graphic_y;
+var rotateDirection = 'clockwise';
+var rY, pRY, frame;
 
 function preload(){
     locationData =  getCurrentPosition();
@@ -30,10 +34,10 @@ function setup() {
     state=1;
     scene[state].play() //to show first frame of the video
     scene[state].pause(); //to stop it from playing right away
-            password=createInput();
-            password.position(windowWidth/2-100,windowHeight/2-50);
-            password.attribute('size','20');
-            password.hide();
+    password=createInput();
+    password.position(windowWidth/2-100,windowHeight/2-50);
+    password.attribute('size','20');
+    password.hide();
     pic1 = loadImage("elements/numpad.png");
     playing = false;
     imageMode(CENTER);
@@ -54,13 +58,12 @@ function doThisOnLocation(position){
 }
 
 function draw() {
-    //    background("RED");
-//    push();
-//    translate(windowWidth / 2, windowHeight / 2);
-//    noTint();
-//    rotate(90);
+    //    push();
+    //    translate(windowWidth / 2, windowHeight / 2);
+    //    noTint();
+    //    rotate(90);
     image(scene[state],windowWidth / 2, windowHeight / 2);
-//    pop();
+    //    pop();
     ////////
     noStroke();
     fill(color, 0, 0, alpha);
@@ -87,7 +90,10 @@ function draw() {
             }
         }
     }else if (state==2){
-     password.remove();
+        password.remove();
+        text(rotateDirection, windowWidth / 2, windowHeight - 50);
+        text(playing + ": " + round(scene2.time()), 50, 50);
+        rotateWheel();
     }
 
 }//password is 34118 (LAT 34.07603371, -118.44086627)
@@ -105,7 +111,7 @@ function touchStarted() {
         alpha = 100;
         scene[state].stop();
     } else {
-       
+
         scene[state].play();
     }
     playing = !playing;
@@ -129,4 +135,28 @@ function mousePressed() {
         scene[state].play();
     }
     playing = !playing;
+}
+
+function rotateWheel() {
+    if (playing) {
+        rY = rotationY + 180;
+        pRY = pRotationY + 180;
+        if ((rY - pRY > 0 && rY - pRY < 180) || rY - pRY < -180) {
+            rotateDirection = 'clockwise';
+            frame+=0.25;
+            scene[state].time(frame);
+        } else if (rY - pRY < 0 || rY - pRY > 180) {
+            rotateDirection = 'counter-clockwise';
+            frame-=0.25;
+            scene[state].time(frame);
+        }
+
+        if(round(scene[state].time())==round(scene[state].duration())){
+            fill(0,255,100);
+            textSize(60);
+            rotateDirection="Next, adjust the blade's height.";
+            scene[state].pause();
+            playing=false; 
+        }
+    }
 }
