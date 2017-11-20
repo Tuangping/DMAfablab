@@ -62,6 +62,7 @@ function draw() {
     //    translate(windowWidth / 2, windowHeight / 2);
     //    noTint();
     //    rotate(90);
+//    console.log("state: "+state);
     image(scene[state],windowWidth / 2, windowHeight / 2);
     //    pop();
     ////////
@@ -84,25 +85,25 @@ function draw() {
             if(lat>=33.5&&lat<34.5&&lon>=-119&&lon<-118){
                 if(scene[state].time()==scene[state].duration()){
                     console.log("state=2");
-                    scene[state].pause();
+                    scene[state].stop();
                     state=2;
-                    image(scene[state],windowWidth / 2, windowHeight / 2);
                     alpha = 100;
                     playing=false;
                 }
             }
         }
     }else if (state==2){
+        image(scene[state],windowWidth / 2, windowHeight / 2);
         fill(color, 0, 0, alpha);
         ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 30, 100, 100);
         console.log("in 2");
         console.log("video time: "+round(scene[state].time()));
         password.remove();
-            rotateWheel();
-            fill(color, 0, 0, 255);
-            textSize(50);
-            text(rotateDirection, windowWidth-200, windowHeight/2 - 50);
-            text(playing + ": " + round(scene[state].time()), 150, 150);
+        rotateWheel();
+        fill(color, 0, 0, 255);
+        textSize(50);
+        text(rotateDirection, windowWidth-200, windowHeight/2 - 50);
+        text(playing + ": " + round(scene[state].time()), 150, 150);
     }
 }//password is 34118 (LAT 34.07603371, -118.44086627)
 function touchStarted() {
