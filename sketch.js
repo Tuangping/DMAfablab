@@ -18,7 +18,7 @@ function setup() {
     fill("BLACK");
     noStroke();
     text("LOADING...", innerWidth/2,innerHeight/2);
-    for(var i=1; i<2; i++){
+    for(var i=1; i<6; i++){
         console.log("video loaded: "+i);
         scene[i] = document.querySelector('video');
         scene[i] = createVideo(['scenes/scene'+i+'.webm', 'scenes/scene'+i+'.mp4']);
@@ -27,9 +27,13 @@ function setup() {
         scene[i].hide();
     }
     //to hide the extra video on html canvas
-    scene[1].play() //to show first frame of the video
-    scene[1].pause(); //to stop it from playing right away
     state=1;
+    scene[state].play() //to show first frame of the video
+    scene[state].pause(); //to stop it from playing right away
+            password=createInput();
+            password.position(windowWidth/2-100,windowHeight/2-50);
+            password.attribute('size','20');
+            password.hide();
     pic1 = loadImage("elements/numpad.png");
     playing = false;
     imageMode(CENTER);
@@ -51,13 +55,12 @@ function doThisOnLocation(position){
 
 function draw() {
     //    background("RED");
-    push();
-    translate(windowWidth / 2, windowHeight / 2);
-    noTint();
-    rotate(90);
-    console.log("playing");
+//    push();
+//    translate(windowWidth / 2, windowHeight / 2);
+//    noTint();
+//    rotate(90);
     image(scene[state], 0, 0);
-    pop();
+//    pop();
     ////////
     noStroke();
     fill(color, 0, 0, alpha);
@@ -72,18 +75,21 @@ function draw() {
             textAlign(CENTER);
             textSize(16);
             fill("YELLOW");
-            text("if cannot be at the location, type in password here", windowWidth/2, windowHeight/2-100);
-            password=createInput();
-            password.position(windowWidth/2-100,windowHeight/2-50);
-            password.attribute('size','20');
+            text("if cannot be at the location, type in password here", windowWidth/2, windowHeight/2-100);       
+            password.show();
             //        password.attribute('maxlength','5');
             if(lat>=33.5&&lat<34.5&&lon>=-119&&lon<-118){
-                console.log("state=2");
+                if(scene[state].time()==scene[state].duration()){
+                    console.log("state=2");
+                    playing=false;
+                    state=2;
+                }
             }
         }
+    }else if (state==2){
     }
-}
-//password is 34118 (LAT 34.07603371, -118.44086627)
+
+}//password is 34118 (LAT 34.07603371, -118.44086627)
 function touchStarted() {
     if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
         if (mouseY < (windowHeight / 2) + 80 && mouseY > (windowHeight / 2) - 80) {
@@ -95,6 +101,7 @@ function touchStarted() {
     }
 
     if (playing) {
+
         scene[state].stop();
 
     } else {
@@ -118,6 +125,7 @@ function mousePressed() {
     }
 
     if (playing) {
+
         scene[state].stop();
     } else {
         alpha = 100;
