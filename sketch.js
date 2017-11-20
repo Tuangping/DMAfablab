@@ -62,7 +62,7 @@ function draw() {
     //    translate(windowWidth / 2, windowHeight / 2);
     //    noTint();
     //    rotate(90);
-//    console.log("state: "+state);
+    //    console.log("state: "+state);
     image(scene[state],windowWidth / 2, windowHeight / 2);
     //    pop();
     ////////
@@ -84,7 +84,7 @@ function draw() {
             //        password.attribute('maxlength','5');
             if(lat>=33.5&&lat<34.5&&lon>=-119&&lon<-118){
                 if(scene[state].time()==scene[state].duration()){
-                    console.log("state=2");
+                    console.log("state = 2");
                     scene[state].stop();
                     state=2;
                     alpha = 100;
@@ -93,17 +93,18 @@ function draw() {
             }
         }
     }else if (state==2){
-        image(scene[state],windowWidth / 2, windowHeight / 2);
+        rotateWheel();
         fill(color, 0, 0, alpha);
         ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 30, 100, 100);
         console.log("in 2");
         console.log("video time: "+round(scene[state].time()));
         password.remove();
-        rotateWheel();
         fill(color, 0, 0, 255);
         textSize(50);
         text(rotateDirection, windowWidth-200, windowHeight/2 - 50);
         text(playing + ": " + round(scene[state].time()), 150, 150);
+    }else if (state==3){
+        console.log("state = 3");
     }
 }//password is 34118 (LAT 34.07603371, -118.44086627)
 function touchStarted() {
@@ -151,10 +152,10 @@ function rotateWheel() {
         pRY = pRotationY + 180;
         if ((rY - pRY > 0 && rY - pRY < 180) || rY - pRY < -180) {
             rotateDirection = 'clockwise';
-            if(frame<33){
+            if(frame<34){
                 frame+=0.25;
             }else if(frame>=0){
-                frame=33;
+                frame=34;
             }
             scene[state].time(frame);
         } else if (rY - pRY < 0 || rY - pRY > 180) {
@@ -166,13 +167,19 @@ function rotateWheel() {
             }
             scene[state].time(frame);
         }
-
-        if(round(scene[state].time())==round(scene[state].duration())){
-            fill(0,255,100);
-            textSize(60);
-            rotateDirection="Next, adjust the blade's height.";
-            scene[state].pause();
-            playing=false; 
-        }
     }
+
+    if(round(scene[state].time())==round(scene[state].duration())){
+        fill(0,255,100);
+        textSize(40);
+        rotateDirection="Next, adjust the blade's height.";
+        scene[state].pause();
+        alpha=100;
+        if(mouseIsPressed){
+            state++;
+            console.log(state);
+        }
+        playing=false; 
+    }
+
 }
