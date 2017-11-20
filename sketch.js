@@ -86,6 +86,7 @@ function draw() {
                     console.log("state=2");
                     state=2;
                     alpha = 100;
+                    scene[state].stop();
                     playing=false;
                 }
             }
