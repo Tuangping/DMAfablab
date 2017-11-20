@@ -59,7 +59,7 @@ function draw() {
 //    translate(windowWidth / 2, windowHeight / 2);
 //    noTint();
 //    rotate(90);
-    image(scene[state], 0, 0);
+    image(scene[state],windowWidth / 2, windowHeight / 2);
 //    pop();
     ////////
     noStroke();
@@ -87,6 +87,7 @@ function draw() {
             }
         }
     }else if (state==2){
+     password.remove();
     }
 
 }//password is 34118 (LAT 34.07603371, -118.44086627)
@@ -107,8 +108,6 @@ function touchStarted() {
     } else {
         alpha = 100;
         scene[state].play();
-        scene[state].time(4);
-
     }
     playing = !playing;
     return false;
@@ -130,8 +129,6 @@ function mousePressed() {
     } else {
         alpha = 100;
         scene[state].play();
-        scene[state].time(4);
-
     }
     playing = !playing;
 }
