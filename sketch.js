@@ -44,7 +44,7 @@ function setup() {
     angleMode(DEGREES);
     color = 255;
     alpha = 100;
-
+    frame=0;
 }
 function doThisOnLocation(position){
     fill(0);
@@ -117,7 +117,7 @@ function touchStarted() {
 
     if (playing) {
         alpha = 100;
-        scene[state].stop();
+        scene[state].pause();
     } else {
         scene[state].play();
     }
@@ -137,7 +137,7 @@ function mousePressed() {
 
     if (playing) {
         alpha = 100;
-        scene[state].stop();
+        scene[state].pause();
     } else {
         scene[state].play();
     }
@@ -150,11 +150,19 @@ function rotateWheel() {
         pRY = pRotationY + 180;
         if ((rY - pRY > 0 && rY - pRY < 180) || rY - pRY < -180) {
             rotateDirection = 'clockwise';
-            frame+=0.25;
+            if(frame<33){
+                frame+=0.25;
+            }else if(frame>=0){
+                frame=33;
+            }
             scene[state].time(frame);
         } else if (rY - pRY < 0 || rY - pRY > 180) {
             rotateDirection = 'counter-clockwise';
-            frame-=0.25;
+            if(frame>0){
+                frame-=0.25;
+            }else if(frame<=0){
+                frame=0;
+            }
             scene[state].time(frame);
         }
 
