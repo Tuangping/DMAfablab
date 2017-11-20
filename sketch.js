@@ -178,8 +178,8 @@ function rotateWheel() {
         if(mouseIsPressed || touchIsDown){
             state++;
             console.log(state);
+            playing=false; 
         }
-        playing=false; 
     }
 
 }
