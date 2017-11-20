@@ -36,20 +36,21 @@ function setup() {
     angleMode(DEGREES);
     color = 255;
     alpha = 100;
-   
+
 }
 function doThisOnLocation(position){
     fill(0);
+    textSize(20);
     console.log("lat: " + position.latitude);
     console.log("long: " + position.longitude);
     lat=position.latitude;
     lon=position.longitude;
-    text("Latitude: "+lat,windowWidth/2,200);
-    text("Longitude: "+lon,windowWidth/2,250);
+    text("Latitude: "+lat,100,200);
+    text("Longitude: "+lon,100,250);
 }
 
 function draw() {
-//    background("RED");
+    //    background("RED");
     push();
     translate(windowWidth / 2, windowHeight / 2);
     noTint();
@@ -63,22 +64,24 @@ function draw() {
     ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 30, 100, 100);
     console.log("video time: "+round(scene[state].time()));
     console.log("isPlaying: "+playing);
-    if (state==1&&playing) {
-//        tint(255, 100);
-//        image(pic1, windowWidth / 2, 350,1000,750);
-        textAlign(CENTER);
-        textSize(16);
-        fill("YELLOW");
-        text("if cannot be at the location, type in password here", windowWidth/2, windowHeight/2-100);
-        password=createInput();
-        password.position(windowWidth/2-100,windowHeight/2-50);
-        password.attribute('size','20');
-//        password.attribute('maxlength','5');
+    if (state==1){
         doThisOnLocation(locationData);
+        if(playing) {
+            //        tint(255, 100);
+            //        image(pic1, windowWidth / 2, 350,1000,750);
+            textAlign(CENTER);
+            textSize(16);
+            fill("YELLOW");
+            text("if cannot be at the location, type in password here", windowWidth/2, windowHeight/2-100);
+            password=createInput();
+            password.position(windowWidth/2-100,windowHeight/2-50);
+            password.attribute('size','20');
+            //        password.attribute('maxlength','5');
+            if(lat>=33.5&&lat<34.5&&lon>=-119&&lon<-118){
+                console.log("state=2");
+            }
+        }
     }
-
-//    text("latitude = "+nf(position.coords.latitude, 2, 6), windowWidth/2,400);
-//    text("longitude = "+nf(position.coords.longitude, 3, 6),windowWidth/2,600);
 }
 //password is 34118 (LAT 34.07603371, -118.44086627)
 function touchStarted() {
@@ -92,11 +95,12 @@ function touchStarted() {
     }
 
     if (playing) {
-        scene[1].stop();
+        scene[state].stop();
 
     } else {
-        scene[1].play();
-        scene[1].time(4);
+        alpha = 100;
+        scene[state].play();
+        scene[state].time(4);
 
     }
     playing = !playing;
@@ -114,12 +118,12 @@ function mousePressed() {
     }
 
     if (playing) {
-        scene[1].stop();
+        scene[state].stop();
     } else {
-        scene[1].play();
-        scene[1].time(4);
+        alpha = 100;
+        scene[state].play();
+        scene[state].time(4);
 
     }
     playing = !playing;
-
 }
