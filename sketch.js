@@ -61,8 +61,6 @@ function setup() {
 function doThisOnLocation(position){
     fill(0);
     textSize(20);
-    console.log("lat: " + position.latitude);
-    console.log("long: " + position.longitude);
     lat=position.latitude;
     lon=position.longitude;
     text("Latitude: "+lat,100,200);
@@ -82,12 +80,12 @@ function draw() {
     console.log("isPlaying: "+playing);
     if (state==1){
         doThisOnLocation(locationData);
+        console.log("lat: " + locationData.latitude);
+        console.log("long: " + locationData.longitude);
         fill(color, 0, 0, alpha);
         ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 30, 100, 100);
         if(playing) {
             console.log("video time: "+round(scene[state].time()))
-            //        tint(255, 100);
-            //        image(pic1, windowWidth / 2, 350,1000,750);
             textAlign(CENTER);
             textSize(16);
             fill("YELLOW");
@@ -96,33 +94,32 @@ function draw() {
             //        password.attribute('maxlength','5');
             if(lat>=33.5&&lat<34.5&&lon>=-119&&lon<-118){
                 if(scene[state].time()==scene[state].duration()){
-                    console.log("state = 2");
+                    console.log("show pic");
                     scene[state].stop();
-                    state=2;
+                    //                    state=2;
                     alpha = 100;
                     playing=false;
-                    //  showpic=true;
+                    showpic=true;
                 }
             }
-            if(showpic){
-                image(pic1,windowWidth / 2, windowHeight / 2);
-                rotations.push(rotationZ);
-                rotations.shift();
-                var curRotation = 0;
-                for (var i = 0; i < rotations.length; i++) {
-                    curRotation += rotations[i];
-                }
-                curRotation /= rotations.length;
-                if(curRotation<5){
-                    curRotation=0;
-                } else if(curRotation>windowWidth){
-                    curRotation=275;
-                }
-                image(bg, round(curRotation)*7,windowHeight/2,bg.width*5,bg.height*5);
-                fill(255,0,0);
-                ellipse (windowWidth,windowHeight,20,20);
-                text("curRo= "+round(curRotation), windowWidth / 2-200, windowHeight - 50);
+        }
+        if(showpic){
+            password.remove();
+            image(pic1,windowWidth / 2, windowHeight / 2, pic1.width*5, pic1.height*5);
+            rotations.push(rotationZ);
+            rotations.shift();
+            var curRotation = 0;
+            for (var i = 0; i < rotations.length; i++) {
+                curRotation += rotations[i];
             }
+            curRotation /= rotations.length;
+            if(curRotation<5){
+                curRotation=0;
+            } else if(curRotation>windowWidth){
+                curRotation=275;
+            }
+            fill(color, 0, 0, 255);
+            text("curRo= "+round(curRotation), windowWidth / 2-200, windowHeight - 50);
         }
     }else if (state==2){
         rotateWheel();
@@ -159,11 +156,15 @@ function touchStarted() {
     } else {
         color = 255;
     }
-
-    if (playing) {
+    if (playing && !showpic) {
         alpha = 100;
         scene[state].pause();
-    } else {
+    } else if (!playing && !showpic) {
+        scene[state].play();
+    } else if (!playing && showpic){
+        state= 2;
+        showpic=false;
+    } else{
         scene[state].play();
     }
     playing = !playing;
@@ -188,6 +189,8 @@ function mousePressed() {
     } else if (!playing && showpic){
         state= 2;
         showpic=false;
+    }else{
+        scene[state].play();
     }
     playing = !playing;
 }
