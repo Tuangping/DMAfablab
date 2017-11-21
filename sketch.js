@@ -1,6 +1,6 @@
 var scene =[];
 var pic1,state,password;
-var color, alpha, playing;
+var color, alpha, playing,showpic;
 var lat,lon,locationData;
 
 // scene2-3
@@ -38,8 +38,9 @@ function setup() {
     password.position(windowWidth/2-100,windowHeight/2-50);
     password.attribute('size','20');
     password.hide();
-    pic1 = loadImage("elements/numpad.png");
+    pic1 = loadImage("scenes/fablab1.jpg");
     playing = false;
+    showpic=false;
     imageMode(CENTER);
     angleMode(DEGREES);
     color = 255;
@@ -89,8 +90,12 @@ function draw() {
                     state=2;
                     alpha = 100;
                     playing=false;
+//                    showpic=true;
                 }
             }
+//            if(showpic){
+//                image(pic1,windowWidth / 2, windowHeight / 2);
+//            }
         }
     }else if (state==2){
         rotateWheel();
@@ -104,7 +109,18 @@ function draw() {
         text(rotateDirection, windowWidth-200, windowHeight/2 - 50);
         text(playing + ": " + round(scene[state].time()), 150, 150);
     }else if (state==3){
-        console.log("state = 3");
+        rotateWheel();
+        fill(color, 0, 0, alpha);
+        ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 30, 100, 100);
+        console.log("in 3");
+        console.log("video time: "+round(scene[state].time()));
+        fill(color, 0, 0, 255);
+        textSize(50);
+        text(rotateDirection, windowWidth-200, windowHeight/2 - 50);
+        text(playing + ": " + round(scene[state].time()), 150, 150);
+      
+    }else if (state ==4){
+        console.log("in 4");
     }
 }//password is 34118 (LAT 34.07603371, -118.44086627)
 function touchStarted() {
@@ -175,7 +191,7 @@ function rotateWheel() {
         rotateDirection="Next, adjust the blade's height.";
         scene[state].pause();
         alpha=100;
-        if(mouseIsPressed || touchIsDown){
+        if(mouseIsPressed){
             state++;
             console.log(state);
             playing=false; 
