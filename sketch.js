@@ -120,7 +120,7 @@ function draw() {
             image(pic1, round(curRotation)*7, windowHeight / 2, pic1.width*5, pic1.height*5);
             textSize(30);
             fill(color, 0, 0, 255);
-            text("curRo= "+round(curRotation), 50 windowHeight - 100);
+            text("curRo= "+round(curRotation), 50, windowHeight - 100);
         }
     }else if (state==2){
         rotateWheel();
