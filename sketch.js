@@ -105,7 +105,6 @@ function draw() {
         }
         if(showpic){
             password.remove();
-            image(pic1,windowWidth / 2, windowHeight / 2, pic1.width*5, pic1.height*5);
             rotations.push(rotationZ);
             rotations.shift();
             var curRotation = 0;
@@ -118,6 +117,7 @@ function draw() {
             } else if(curRotation>windowWidth){
                 curRotation=275;
             }
+            image(pic1, round(curRotation)*7, windowHeight / 2, pic1.width*5, pic1.height*5);
             fill(color, 0, 0, 255);
             text("curRo= "+round(curRotation), windowWidth / 2-200, windowHeight - 50);
         }
