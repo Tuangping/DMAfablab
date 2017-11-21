@@ -1,7 +1,11 @@
 var scene =[];
-var pic1,state,password;
+var state,password;
 var color, alpha, playing,showpic;
 var lat,lon,locationData;
+
+//scene1 fablab180
+var pic1,x_pos, last_x, last_move, last_y;
+var rotations = [];
 
 // scene2-3
 var blade, wheel, graphic_y;
@@ -22,6 +26,7 @@ function setup() {
     fill("BLACK");
     noStroke();
     text("LOADING...", innerWidth/2,innerHeight/2);
+    /////////
     for(var i=1; i<6; i++){
         console.log("video loaded: "+i);
         scene[i] = document.querySelector('video');
@@ -39,6 +44,10 @@ function setup() {
     password.attribute('size','20');
     password.hide();
     pic1 = loadImage("scenes/fablab1.jpg");
+    for (var i = 0; i < 80; i++) { // change number here to affect smooth
+        rotations.push(0);
+    }
+    //////////
     playing = false;
     showpic=false;
     imageMode(CENTER);
@@ -46,6 +55,8 @@ function setup() {
     color = 255;
     alpha = 100;
     frame=0;
+
+
 }
 function doThisOnLocation(position){
     fill(0);
@@ -90,12 +101,28 @@ function draw() {
                     state=2;
                     alpha = 100;
                     playing=false;
-//                    showpic=true;
+                    //  showpic=true;
                 }
             }
-//            if(showpic){
-//                image(pic1,windowWidth / 2, windowHeight / 2);
-//            }
+            if(showpic){
+                image(pic1,windowWidth / 2, windowHeight / 2);
+                rotations.push(rotationZ);
+                rotations.shift();
+                var curRotation = 0;
+                for (var i = 0; i < rotations.length; i++) {
+                    curRotation += rotations[i];
+                }
+                curRotation /= rotations.length;
+                if(curRotation<5){
+                    curRotation=0;
+                } else if(curRotation>windowWidth){
+                    curRotation=275;
+                }
+                image(bg, round(curRotation)*7,windowHeight/2,bg.width*5,bg.height*5);
+                fill(255,0,0);
+                ellipse (windowWidth,windowHeight,20,20);
+                text("curRo= "+round(curRotation), windowWidth / 2-200, windowHeight - 50);
+            }
         }
     }else if (state==2){
         rotateWheel();
@@ -118,7 +145,7 @@ function draw() {
         textSize(50);
         text(rotateDirection, windowWidth-200, windowHeight/2 - 50);
         text(playing + ": " + round(scene[state].time()), 150, 150);
-      
+
     }else if (state ==4){
         console.log("in 4");
     }
@@ -153,11 +180,14 @@ function mousePressed() {
         color = 255;
     }
 
-    if (playing) {
+    if (playing && !showpic) {
         alpha = 100;
         scene[state].pause();
-    } else {
+    } else if (!playing && !showpic) {
         scene[state].play();
+    } else if (!playing && showpic){
+        state= 2;
+        showpic=false;
     }
     playing = !playing;
 }
