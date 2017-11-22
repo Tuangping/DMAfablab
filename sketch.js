@@ -214,13 +214,14 @@ function draw() {
     }else if (state ==6){
         background("RED");
         console.log("in 6");
+        textAlign(LEFT);
         fill("BLACK");
-        text("accelerationX = " + round(accelerationX) + "Y =" + round(accelerationY) + "Z =" + round(accelerationZ), 20, 50);
+        text("accelerationX = " + round(accelerationX) + "Y =" + round(accelerationY) + "Z =" + round(accelerationZ), 70, 50);
         fill("BLUE");
-        text("move X: " + moveX + " move Y: " + moveY, 20, 150);
-        text("rotationX = " + round(rotationX) + "ro Y =" + round(rotationY), 20, 250);
-        text("trigger: " + trigger + "next move: " + nextMove, 20, 350);
-        text("touching: " + operating, 20, 550);
+        text("move X: " + moveX + " move Y: " + moveY, 70, 150);
+        text("rotationX = " + round(rotationX) + "ro Y =" + round(rotationY), 70, 250);
+        text("trigger: " + trigger + "next move: " + nextMove, 70, 350);
+        text("touching: " + operating, 70, 550);
         fill(color_s6);
         checkSaw();
         ellipse(ballX, ballY, 50, 50);
