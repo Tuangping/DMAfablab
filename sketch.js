@@ -40,7 +40,7 @@ function setup() {
         scene[i].hide();
     }
     //to hide the extra video on html canvas
-    state=4;
+    state=1;
     scene[state].play() //to show first frame of the video
     scene[state].pause(); //to stop it from playing right away
     password=createInput();
@@ -81,7 +81,12 @@ function draw() {
     //    noTint();
     //    rotate(90);
     //    console.log("state: "+state);
-    image(scene[state],windowWidth / 2, windowHeight / 2);
+    if (state ==6){ 
+      console.log("state 6");
+    }
+    else {
+      image(scene[state],windowWidth / 2, windowHeight / 2);
+    }
     //    pop();
     ////////
     noStroke();
@@ -174,6 +179,21 @@ function draw() {
             rect(matt_x,matt_y,700,350);
             runningSaw();
         }
+    }else if (state ==5){
+        rotateWheel();
+        rectMode(CORNER);
+        fill(color, 0, 0, alpha);
+        ellipse(windowWidth / 2, 200, 100, 100);
+        fill(color,0,0,100);
+        rect(0,windowHeight/2+270,windowWidth, 110);
+        console.log("in 5");
+        console.log("video time: "+round(scene[state].time()));
+        fill(color, 0, 0, 255);
+        textSize(50);
+        text(rotateDirection, windowWidth-200, 500 );
+        text(playing + ": " + round(scene[state].time()), 150, 150);
+    }else if (state ==6){
+        console.log("in 6");
     }
 }//password is 34118 (LAT 34.07603371, -118.44086627)
 function touchStarted() {
@@ -189,7 +209,6 @@ function touchStarted() {
         } else{
             scene[state].play();
         }
-
         ///////--------------------------------////////
         if(state==1 ||state==2){
             if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
@@ -202,8 +221,9 @@ function touchStarted() {
 
             }
         }else if (state==3){
-            if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
-                if (mouseY < (windowHeight / 2) + 180 && mouseY > (windowHeight / 2) + 130) {
+            // ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 180, 100, 100);
+            if (mouseX > (windowWidth / 2) - 80 && mouseX < (windowWidth / 2) + 20) {
+                if (mouseY < (windowHeight / 2) + 230 && mouseY > (windowHeight / 2) + 130) {
                     console.log("hit");
                     alpha = 0;
                 }
@@ -253,9 +273,19 @@ function touchStarted() {
                     clickAble=false;
                 } else{
                     state=5;
-                    scene[state].stop();
                     isCut=false;
                 }
+
+            }
+        }else if (state==5){
+            //                ellipse(windowWidth / 2, 200, 100, 100);
+            if (mouseX > windowWidth/2 - 50 && mouseX < windowWidth/2+150) {
+                if (mouseY < 250 && mouseY > 150 ) {
+                    console.log("hit");
+                    alpha = 0;
+                }
+            } else {
+                color = 255;
 
             }
         }
@@ -272,6 +302,13 @@ function touchMoved() {
     return false;
 }
 function rotateWheel() {
+    var endState;
+    if (state ==5){
+        endState=20;
+    }else{
+        endState=round(scene[state].duration());
+    }
+
     if (playing) {
         rY = rotationY + 180;
         pRY = pRotationY + 180;
@@ -294,7 +331,7 @@ function rotateWheel() {
         }
     }
 
-    if(round(scene[state].time())==round(scene[state].duration())){
+    if(round(scene[state].time())==endState){
         fill(0,255,100);
         textSize(40);
         rotateDirection="Next, adjust the blade's height.";
