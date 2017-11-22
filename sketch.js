@@ -71,7 +71,7 @@ function setup() {
     ballX = 100;
     ballY = windowHeight / 2;
     trigger = 0;
-    color_s6 = "RED";
+    color_s6 = "GREEN";
     lastX = 0;
     moveX = 0;
     moveY = 0;
@@ -220,7 +220,7 @@ function draw() {
         text("rotationX = " + round(rotationX) + "ro Y =" + round(rotationY), 20, 250);
         text("trigger: " + trigger + "next move: " + nextMove, 20, 350);
         text("touching: " + operating, 20, 550);
-        fill(color);
+        fill(color_s6);
         checkSaw();
         ellipse(ballX, ballY, 50, 50);
     }
@@ -438,7 +438,7 @@ function checkSaw() {
       ballX = 100;
       ballY = windowHeight / 2;
       trigger = 0;
-      color = "RED";
+      color_s6 = "GREEN";
       lastX = 0;
       moveX = 0;
       moveY = 0;
@@ -447,20 +447,20 @@ function checkSaw() {
     //run ball
     if (trigger == 0 && moveX < -8 && nextMove) {
       ballX = 200;
-      color = "YELLOW";
+      color_s6 = "YELLOW";
       trigger = 1;
       nextMove = false;
     }
     if (trigger == 1 && moveY > 7 && nextMove) {
       ballY = windowHeight / 2 + 200;
-      color = "BLACK";
+      color_s6 = "BLACK";
       trigger = 2;
       nextMove = false;
     }
     if (trigger == 2 && moveX > 8 && nextMove) {
       ballX = 100;
       ballY = windowHeight / 2 + 200;
-      color = "PINK";
+      color_s6 = "PINK";
       trigger = 3;
       nextMove = false;
     }
