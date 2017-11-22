@@ -2,7 +2,7 @@ var scene =[];
 var state,password;
 var color, alpha, playing,showpic;
 var lat,lon,locationData;
-
+var clickAble;
 //scene1 fablab180
 var pic1,x_pos, last_x, last_move, last_y;
 var rotations = [];
@@ -11,6 +11,10 @@ var rotations = [];
 var blade, wheel, graphic_y;
 var rotateDirection = 'clockwise';
 var rY, pRY, frame;
+
+//scene 4
+var matt_x,matt_y,isCut;
+
 
 function preload(){
     locationData =  getCurrentPosition();
@@ -36,7 +40,7 @@ function setup() {
         scene[i].hide();
     }
     //to hide the extra video on html canvas
-    state=1;
+    state=4;
     scene[state].play() //to show first frame of the video
     scene[state].pause(); //to stop it from playing right away
     password=createInput();
@@ -50,12 +54,15 @@ function setup() {
     //////////
     playing = false;
     showpic=false;
+    clickAble=true;
+    isCut=false;
     imageMode(CENTER);
     angleMode(DEGREES);
     color = 255;
     alpha = 100;
     frame=0;
-
+    matt_x = windowWidth/2-60;
+    matt_y = windowHeight-200;
 
 }
 function doThisOnLocation(position){
@@ -63,7 +70,7 @@ function doThisOnLocation(position){
     textSize(20);
     lat=position.latitude;
     lon=position.longitude;
-    
+
     text("Latitude: "+lat,170,200);
     text("Longitude: "+lon,230,250);
 }
@@ -79,6 +86,7 @@ function draw() {
     ////////
     noStroke();
     console.log("isPlaying: "+playing);
+    console.log("showpic: "+showpic);
     if (state==1){
         doThisOnLocation(locationData);
         console.log("lat: " + locationData.latitude);
@@ -93,16 +101,15 @@ function draw() {
             text("if cannot be at the location, type in password here", windowWidth/2, windowHeight/2-100);       
             password.show();
             //        password.attribute('maxlength','5');
-            if(lat>=33.5&&lat<34.5&&lon>=-119&&lon<-118){
-                if(scene[state].time()==scene[state].duration()){
-                    console.log("show pic");
-                    scene[state].stop();
-                    //                    state=2;
-                    alpha = 100;
-                    playing=false;
-                    showpic=true;
-                }
+            if(lat>=33.5&&lat<34.5&&lon>=-119&&lon<-118){          if(scene[state].time()==scene[state].duration()){
+                console.log("show pic");
+                scene[state].stop();
+                //state=2;
+                alpha = 100;
+                playing=false;
+                showpic=true;
             }
+                                                        }
         }
         if(showpic){
             password.remove();
@@ -137,7 +144,7 @@ function draw() {
     }else if (state==3){
         rotateWheel();
         fill(color, 0, 0, alpha);
-        ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 30, 100, 100);
+        ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 180, 100, 100);
         console.log("in 3");
         console.log("video time: "+round(scene[state].time()));
         fill(color, 0, 0, 255);
@@ -147,56 +154,123 @@ function draw() {
 
     }else if (state ==4){
         console.log("in 4");
+        console.log("video time: "+round(scene[state].time()));
+        if(round(scene[state].time())==0){
+            fill(color, 0, 0, alpha);
+            ellipse(windowWidth-50,windowHeight/2, 100, 100);
+        }else if (round(scene[state].time())==4){
+            scene[state].pause();
+            playing=false;
+            fill(color, 0, 0, 100);
+            ellipse(windowWidth-200,windowHeight-50, 100, 100);
+        }else if (round(scene[state].time())==11){
+            scene[state].pause();
+            playing=false;
+            fill(color, 0, 0, 100);
+            ellipse(250,windowHeight/2-100, 100, 100);
+        }else if (round(scene[state].time())>=25){
+            fill(255,0,0,100);
+            rectMode(CENTER);
+            rect(matt_x,matt_y,700,350);
+            runningSaw();
+        }
     }
 }//password is 34118 (LAT 34.07603371, -118.44086627)
 function touchStarted() {
-    if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
-        if (mouseY < (windowHeight / 2) + 80 && mouseY > (windowHeight / 2) - 80) {
-            console.log("hit");
-            alpha = 0;
+    if(clickAble){
+        if (playing && !showpic) {
+            alpha = 100;
+            scene[state].pause();
+        } else if (!playing && !showpic) {
+            scene[state].play();
+        } else if (!playing && showpic){
+            state= 2;
+            showpic=false;
+        } else{
+            scene[state].play();
         }
-    } else {
-        color = 255;
+
+        ///////--------------------------------////////
+        if(state==1 ||state==2){
+            if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
+                if (mouseY < (windowHeight / 2) + 80 && mouseY > (windowHeight / 2) - 20) {
+                    console.log("hit");
+                    alpha = 0;
+                }
+            } else {
+                color = 255;
+
+            }
+        }else if (state==3){
+            if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
+                if (mouseY < (windowHeight / 2) + 180 && mouseY > (windowHeight / 2) + 130) {
+                    console.log("hit");
+                    alpha = 0;
+                }
+            } else {
+                color = 255;
+
+            }
+        }else if (state==4){
+            if(round(scene[state].time())==0){
+                if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
+                    if (mouseY < (windowHeight / 2) + 180 && mouseY > (windowHeight / 2) + 130) {
+                        console.log("hit");
+                        alpha = 0;
+                    }
+                } else {
+                    color = 255;
+
+                }
+            }else if(round(scene[state].time())==4){  //windowWidth-200,windowHeight-50, 100, 100
+                if (mouseX > windowWidth - 250 && mouseX < windowWidth-150) {
+                    if (mouseY < windowHeight && mouseY > windowHeight - 100) {
+                        console.log("hit");
+                        alpha = 0;
+                        scene[state].time(5);
+                    }
+                } else {
+                    color = 255;
+
+                }
+            }else if(round(scene[state].time())==11){ //ellipse(250,windowHeight/2-100, 100, 100);
+
+                if (mouseX > 200 && mouseX < 300) {
+                    if (mouseY < 850 && mouseY > 720) {
+                        console.log("hit");
+                        alpha = 0;
+                        scene[state].time(12);
+                    }
+                } else {
+                    color = 255;
+
+                }
+            }else if(round(scene[state].time())>=25){
+                //                matt_x = mouseX;
+                //                matt_y = mouseY;
+                if (!isCut){
+                    scene[state].play();
+                    clickAble=false;
+                } else{
+                    state=5;
+                    scene[state].stop();
+                    isCut=false;
+                }
+
+            }
+        }
+
+        playing = !playing;
     }
-    if (playing && !showpic) {
-        alpha = 100;
-        scene[state].pause();
-    } else if (!playing && !showpic) {
-        scene[state].play();
-    } else if (!playing && showpic){
-        state= 2;
-        showpic=false;
-    } else{
-        scene[state].play();
-    }
-    playing = !playing;
     return false;
 }
-
-function mousePressed() {
-    if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
-        if (mouseY < (windowHeight / 2) + 80 && mouseY > (windowHeight / 2) - 80) {
-            console.log("hit");
-            alpha = 0;
-        }
-    } else {
-        color = 255;
+function touchMoved() {
+    if(round(scene[state].time())>=25){
+        matt_x = mouseX;
+        matt_y = mouseY;
     }
-
-    if (playing && !showpic) {
-        alpha = 100;
-        scene[state].pause();
-    } else if (!playing && !showpic) {
-        scene[state].play();
-    } else if (!playing && showpic){
-        state= 2;
-        showpic=false;
-    }else{
-        scene[state].play();
-    }
-    playing = !playing;
+    return false;
 }
-
 function rotateWheel() {
     if (playing) {
         rY = rotationY + 180;
@@ -234,3 +308,89 @@ function rotateWheel() {
     }
 
 }
+
+function runningSaw(){
+    console.log("machine is running.");
+    if(round(scene[state].time())==27){
+        scene[state].time(26);
+    }
+    //    strokeWeight(20);
+    //    stroke(255);
+    //    alpha = 100;
+    //    line(windowWidth/2-20,windowHeight/2+100,windowWidth/2-20,windowHeight/2+300 );
+    //    // wood size : rect(matt_x,matt_y,700,350);
+    if(mouseX-350<windowWidth/2-20 && mouseX+350> windowWidth/2-20 && mouseY-175<windowHeight/2+300  && mouseY+175>windowHeight/2+100  ){
+        fill("YELLOW");
+        noStroke(); 
+        textSize(60);
+        text("CUT!!",windowWidth/2,300);
+        isCut=true;
+    }
+    if (isCut){
+        if(mouseY+175<windowHeight/2+100){ //the wood has went pass the saw already
+            fill("YELLOW");
+            noStroke(); 
+            textSize(60);
+            text("--DONE--",windowWidth/2,300);
+            scene[state].pause();
+            clickAble=true;
+        }
+    }
+}
+
+//function mousePressed() {
+//    if(state==1 ||state==2){
+//        if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
+//            if (mouseY < (windowHeight / 2) + 80 && mouseY > (windowHeight / 2) - 20) {
+//                console.log("hit");
+//                alpha = 0;
+//            }
+//        } else {
+//            color = 255;
+//        }
+//    }else if (state==3){
+//        if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
+//            if (mouseY < (windowHeight / 2) + 180 && mouseY > (windowHeight / 2) + 130) {
+//                console.log("hit");
+//                alpha = 0;
+//            }
+//        } else {
+//            color = 255;
+//        }
+//    }else if (state==4){
+//        if(round(scene[state].time())==0){
+//            if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
+//                if (mouseY < (windowHeight / 2) + 180 && mouseY > (windowHeight / 2) + 130) {
+//                    console.log("hit");
+//                    alpha = 0;
+//                }
+//            } else {
+//                color = 255;
+//            }
+//        }else if(round(scene[state].time())==4.0){  //windowWidth-200,windowHeight-50, 100, 100
+//            if (mouseX > windowWidth - 150 && mouseX < windowWidth + 250) {
+//                if (mouseY < windowHeight && mouseY > windowHeight - 100) {
+//                    console.log("hit");
+//                    alpha = 0;
+//                }
+//            } else {
+//                color = 255;
+//            }
+//        }
+//    }
+//
+//
+//    ///////--------------------------------////////
+//    if (playing && !showpic) {
+//        alpha = 100;
+//        scene[state].pause();
+//    } else if (!playing && !showpic) {
+//        scene[state].play();
+//    } else if (!playing && showpic){
+//        state= 2;
+//        showpic=false;
+//    }else{
+//        scene[state].play();
+//    }
+//    playing = !playing;
+//}
