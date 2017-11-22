@@ -3,18 +3,22 @@ var state,password;
 var color, alpha, playing,showpic;
 var lat,lon,locationData;
 var clickAble;
-//scene1 fablab180
+//state1+ fablab180
 var pic1,x_pos, last_x, last_move, last_y;
 var rotations = [];
 
-// scene2-3
+// state 2-3,5
 var blade, wheel, graphic_y;
 var rotateDirection = 'clockwise';
 var rY, pRY, frame;
 
-//scene 4
+//state 4
 var matt_x,matt_y,isCut;
 
+//state 6
+var ballX, ballY;
+var trigger, color_s6;
+var moveX, moveY, moveZ, lastX, lastY, lastZ, nextMove, operating;
 
 function preload(){
     locationData =  getCurrentPosition();
@@ -40,9 +44,9 @@ function setup() {
         scene[i].hide();
     }
     //to hide the extra video on html canvas
-    state=1;
-    scene[state].play() //to show first frame of the video
-    scene[state].pause(); //to stop it from playing right away
+    state=6;
+//    scene[state].play() //to show first frame of the video
+//    scene[state].pause(); //to stop it from playing right away
     password=createInput();
     password.position(windowWidth/2-100,windowHeight/2-50);
     password.attribute('size','20');
@@ -63,6 +67,16 @@ function setup() {
     frame=0;
     matt_x = windowWidth/2-60;
     matt_y = windowHeight-200;
+    //////////
+    ballX = 100;
+    ballY = windowHeight / 2;
+    trigger = 0;
+    color_s6 = "RED";
+    lastX = 0;
+    moveX = 0;
+    moveY = 0;
+    nextMove = false;
+    operating = false;
 
 }
 function doThisOnLocation(position){
@@ -81,18 +95,19 @@ function draw() {
     //    noTint();
     //    rotate(90);
     //    console.log("state: "+state);
-    if (state ==6){ 
-      console.log("state 6");
-    }
-    else {
-      image(scene[state],windowWidth / 2, windowHeight / 2);
-    }
+    //    if (state ==6){ 
+    //        console.log("state 6");
+    //    }
+    //    else {
+    //        image(scene[state],windowWidth / 2, windowHeight / 2);
+    //    }
     //    pop();
     ////////
     noStroke();
     console.log("isPlaying: "+playing);
     console.log("showpic: "+showpic);
     if (state==1){
+        image(scene[state],windowWidth / 2, windowHeight / 2);
         doThisOnLocation(locationData);
         console.log("lat: " + locationData.latitude);
         console.log("long: " + locationData.longitude);
@@ -136,6 +151,7 @@ function draw() {
             text("curRo= "+round(curRotation), 150, windowHeight - 100);
         }
     }else if (state==2){
+        image(scene[state],windowWidth / 2, windowHeight / 2);
         rotateWheel();
         fill(color, 0, 0, alpha);
         ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 30, 100, 100);
@@ -147,6 +163,7 @@ function draw() {
         text(rotateDirection, windowWidth-200, windowHeight/2 - 50);
         text(playing + ": " + round(scene[state].time()), 150, 150);
     }else if (state==3){
+        image(scene[state],windowWidth / 2, windowHeight / 2);
         rotateWheel();
         fill(color, 0, 0, alpha);
         ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 180, 100, 100);
@@ -158,6 +175,7 @@ function draw() {
         text(playing + ": " + round(scene[state].time()), 150, 150);
 
     }else if (state ==4){
+        image(scene[state],windowWidth / 2, windowHeight / 2);
         console.log("in 4");
         console.log("video time: "+round(scene[state].time()));
         if(round(scene[state].time())==0){
@@ -180,6 +198,7 @@ function draw() {
             runningSaw();
         }
     }else if (state ==5){
+        image(scene[state],windowWidth / 2, windowHeight / 2);
         rotateWheel();
         rectMode(CORNER);
         fill(color, 0, 0, alpha);
@@ -194,20 +213,34 @@ function draw() {
         text(playing + ": " + round(scene[state].time()), 150, 150);
     }else if (state ==6){
         console.log("in 6");
+        fill("BLACK");
+        text("accelerationX = " + round(accelerationX) + "Y =" + round(accelerationY) + "Z =" + round(accelerationZ), 20, 50);
+        fill("BLUE");
+        text("move X: " + moveX + " move Y: " + moveY, 20, 150);
+        text("rotationX = " + round(rotationX) + "ro Y =" + round(rotationY), 20, 250);
+        text("trigger: " + trigger + "next move: " + nextMove, 20, 350);
+        text("touching: " + operating, 20, 550);
+        fill(color);
+        checkSaw();
+        ellipse(ballX, ballY, 50, 50);
     }
 }//password is 34118 (LAT 34.07603371, -118.44086627)
 function touchStarted() {
     if(clickAble){
-        if (playing && !showpic) {
-            alpha = 100;
-            scene[state].pause();
-        } else if (!playing && !showpic) {
-            scene[state].play();
-        } else if (!playing && showpic){
-            state= 2;
-            showpic=false;
-        } else{
-            scene[state].play();
+        if(state==6){
+
+        }else{
+            if (playing && !showpic) {
+                alpha = 100;
+                scene[state].pause();
+            } else if (!playing && !showpic) {
+                scene[state].play();
+            } else if (!playing && showpic){
+                state= 2;
+                showpic=false;
+            } else{
+                scene[state].play();
+            }
         }
         ///////--------------------------------////////
         if(state==1 ||state==2){
@@ -288,10 +321,16 @@ function touchStarted() {
                 color = 255;
 
             }
+        } else {
+            operating =true;
         }
 
         playing = !playing;
     }
+    return false;
+}
+function touchEnded(){
+    operating=false;
     return false;
 }
 function touchMoved() {
@@ -345,7 +384,6 @@ function rotateWheel() {
     }
 
 }
-
 function runningSaw(){
     console.log("machine is running.");
     if(round(scene[state].time())==27){
@@ -373,6 +411,60 @@ function runningSaw(){
             clickAble=true;
         }
     }
+}
+function checkSaw() {
+  if (operating) {
+    if (lastX > round(rotationX)) {
+      moveX++;
+    } else if (lastX < round(rotationX)) {
+      moveX--;
+    }
+    lastX = round(rotationX);
+
+    if (lastY > round(rotationY)) {
+      moveY++;
+    } else if (lastY < round(rotationY)) {
+      moveY--;
+    }
+    lastY = round(rotationY);
+    //
+    //check if move
+    if (round(accelerationX) == 0 && round(accelerationY) == 0 && round(accelerationZ) == 0) {
+      moveX = 0;
+      moveY = 0;
+      nextMove = true;
+    }
+    if (trigger == 3 && round(accelerationX) == 0 && round(accelerationY) == 0 && round(accelerationZ) == 0) {
+      ballX = 100;
+      ballY = windowHeight / 2;
+      trigger = 0;
+      color = "RED";
+      lastX = 0;
+      moveX = 0;
+      moveY = 0;
+    }
+
+    //run ball
+    if (trigger == 0 && moveX < -8 && nextMove) {
+      ballX = 200;
+      color = "YELLOW";
+      trigger = 1;
+      nextMove = false;
+    }
+    if (trigger == 1 && moveY > 7 && nextMove) {
+      ballY = windowHeight / 2 + 200;
+      color = "BLACK";
+      trigger = 2;
+      nextMove = false;
+    }
+    if (trigger == 2 && moveX > 8 && nextMove) {
+      ballX = 100;
+      ballY = windowHeight / 2 + 200;
+      color = "PINK";
+      trigger = 3;
+      nextMove = false;
+    }
+  }
 }
 
 //function mousePressed() {
