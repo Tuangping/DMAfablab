@@ -413,6 +413,7 @@ function runningSaw(){
     }
 }
 function checkSaw() {
+    background("RED");
   if (operating) {
     if (lastX > round(rotationX)) {
       moveX++;
