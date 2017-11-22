@@ -45,8 +45,8 @@ function setup() {
     }
     //to hide the extra video on html canvas
     state=6;
-//    scene[state].play() //to show first frame of the video
-//    scene[state].pause(); //to stop it from playing right away
+    //    scene[state].play() //to show first frame of the video
+    //    scene[state].pause(); //to stop it from playing right away
     password=createInput();
     password.position(windowWidth/2-100,windowHeight/2-50);
     password.attribute('size','20');
@@ -212,6 +212,7 @@ function draw() {
         text(rotateDirection, windowWidth-200, 500 );
         text(playing + ": " + round(scene[state].time()), 150, 150);
     }else if (state ==6){
+        background("RED");
         console.log("in 6");
         fill("BLACK");
         text("accelerationX = " + round(accelerationX) + "Y =" + round(accelerationY) + "Z =" + round(accelerationZ), 20, 50);
@@ -413,59 +414,59 @@ function runningSaw(){
     }
 }
 function checkSaw() {
-    background("RED");
-  if (operating) {
-    if (lastX > round(rotationX)) {
-      moveX++;
-    } else if (lastX < round(rotationX)) {
-      moveX--;
-    }
-    lastX = round(rotationX);
 
-    if (lastY > round(rotationY)) {
-      moveY++;
-    } else if (lastY < round(rotationY)) {
-      moveY--;
-    }
-    lastY = round(rotationY);
-    //
-    //check if move
-    if (round(accelerationX) == 0 && round(accelerationY) == 0 && round(accelerationZ) == 0) {
-      moveX = 0;
-      moveY = 0;
-      nextMove = true;
-    }
-    if (trigger == 3 && round(accelerationX) == 0 && round(accelerationY) == 0 && round(accelerationZ) == 0) {
-      ballX = 100;
-      ballY = windowHeight / 2;
-      trigger = 0;
-      color_s6 = "GREEN";
-      lastX = 0;
-      moveX = 0;
-      moveY = 0;
-    }
+    if (operating) {
+        if (lastX > round(rotationX)) {
+            moveX++;
+        } else if (lastX < round(rotationX)) {
+            moveX--;
+        }
+        lastX = round(rotationX);
 
-    //run ball
-    if (trigger == 0 && moveX < -8 && nextMove) {
-      ballX = 200;
-      color_s6 = "YELLOW";
-      trigger = 1;
-      nextMove = false;
+        if (lastY > round(rotationY)) {
+            moveY++;
+        } else if (lastY < round(rotationY)) {
+            moveY--;
+        }
+        lastY = round(rotationY);
+        //
+        //check if move
+        if (round(accelerationX) == 0 && round(accelerationY) == 0 && round(accelerationZ) == 0) {
+            moveX = 0;
+            moveY = 0;
+            nextMove = true;
+        }
+        if (trigger == 3 && round(accelerationX) == 0 && round(accelerationY) == 0 && round(accelerationZ) == 0) {
+            ballX = 100;
+            ballY = windowHeight / 2;
+            trigger = 0;
+            color_s6 = "GREEN";
+            lastX = 0;
+            moveX = 0;
+            moveY = 0;
+        }
+
+        //run ball
+        if (trigger == 0 && moveX < -8 && nextMove) {
+            ballX = 200;
+            color_s6 = "YELLOW";
+            trigger = 1;
+            nextMove = false;
+        }
+        if (trigger == 1 && moveY > 7 && nextMove) {
+            ballY = windowHeight / 2 + 200;
+            color_s6 = "BLACK";
+            trigger = 2;
+            nextMove = false;
+        }
+        if (trigger == 2 && moveX > 8 && nextMove) {
+            ballX = 100;
+            ballY = windowHeight / 2 + 200;
+            color_s6 = "PINK";
+            trigger = 3;
+            nextMove = false;
+        }
     }
-    if (trigger == 1 && moveY > 7 && nextMove) {
-      ballY = windowHeight / 2 + 200;
-      color_s6 = "BLACK";
-      trigger = 2;
-      nextMove = false;
-    }
-    if (trigger == 2 && moveX > 8 && nextMove) {
-      ballX = 100;
-      ballY = windowHeight / 2 + 200;
-      color_s6 = "PINK";
-      trigger = 3;
-      nextMove = false;
-    }
-  }
 }
 
 //function mousePressed() {
