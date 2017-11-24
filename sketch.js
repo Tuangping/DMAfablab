@@ -35,7 +35,7 @@ function setup() {
     noStroke();
     text("LOADING...", innerWidth/2,innerHeight/2);
     /////////
-    for(var i=1; i<6; i++){
+    for(var i=1; i<7; i++){
         console.log("video loaded: "+i);
         scene[i] = document.querySelector('video');
         scene[i] = createVideo(['scenes/scene'+i+'.webm', 'scenes/scene'+i+'.mp4']);
@@ -212,38 +212,45 @@ function draw() {
         text(rotateDirection, windowWidth-200, 500 );
         text(playing + ": " + round(scene[state].time()), 150, 150);
     }else if (state ==6){
-        background("RED");
+        image(scene[state],windowWidth / 2, windowHeight / 2);
         console.log("in 6");
+        console.log("video time: "+round(scene[state].time()));
+        textSize(40);
         textAlign(LEFT);
         fill("BLACK");
-        text("accelerationX = " + round(accelerationX) + "Y =" + round(accelerationY) + "Z =" + round(accelerationZ), 70, 50);
-        fill("BLUE");
-        text("move X: " + moveX + " move Y: " + moveY, 70, 150);
-        text("rotationX = " + round(rotationX) + "ro Y =" + round(rotationY), 70, 250);
-        text("trigger: " + trigger + "next move: " + nextMove, 70, 350);
-        text("touching: " + operating, 70, 550);
+        text("accelerationX = " + round(accelerationX) + "Y =" + round(accelerationY) + "Z =" + round(accelerationZ), 20, 50);
+        fill("YELLOW");
+        text("rotationX = " + round(rotationX) + " | ro Y =" + round(rotationY)+ " | ro Z =" + round(rotationZ), 20, 250);
+        text("trigger: " + trigger + "| next move: " + nextMove, 20, 350);
+        text("touching: " + operating, 20, 550);
         fill(color_s6);
         checkSaw();
         ellipse(ballX, ballY, 50, 50);
+
     }
 }//password is 34118 (LAT 34.07603371, -118.44086627)
 function touchStarted() {
     if(clickAble){
-        if(state==6){
-
-        }else{
-            if (playing && !showpic) {
-                alpha = 100;
-                scene[state].pause();
-            } else if (!playing && !showpic) {
-                scene[state].play();
-            } else if (!playing && showpic){
-                state= 2;
-                showpic=false;
-            } else{
-                scene[state].play();
-            }
+        //        if(state==6){
+        //            if(operating){
+        //                scene[state].play();
+        //            }else{
+        //                scene[state].pause();
+        //            }
+        //        }
+        //    }else{
+        if (playing && !showpic) {
+            alpha = 100;
+            scene[state].pause();
+        } else if (!playing && !showpic) {
+            scene[state].play();
+        } else if (!playing && showpic){
+            state= 2;
+            showpic=false;
+        } else{
+            scene[state].play();
         }
+        //        }
         ///////--------------------------------////////
         if(state==1 ||state==2){
             if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
@@ -324,6 +331,7 @@ function touchStarted() {
 
             }
         } else {
+            console.log("clickable in 6");
             operating =true;
         }
 
@@ -417,56 +425,52 @@ function runningSaw(){
 function checkSaw() {
 
     if (operating) {
-        if (lastX > round(rotationX)) {
-            moveX++;
-        } else if (lastX < round(rotationX)) {
-            moveX--;
-        }
-        lastX = round(rotationX);
-
-        if (lastY > round(rotationY)) {
-            moveY++;
-        } else if (lastY < round(rotationY)) {
-            moveY--;
-        }
-        lastY = round(rotationY);
-        //
         //check if move
         if (round(accelerationX) == 0 && round(accelerationY) == 0 && round(accelerationZ) == 0) {
-            moveX = 0;
-            moveY = 0;
             nextMove = true;
-        }
-        if (trigger == 3 && round(accelerationX) == 0 && round(accelerationY) == 0 && round(accelerationZ) == 0) {
-            ballX = 100;
-            ballY = windowHeight / 2;
-            trigger = 0;
-            color_s6 = "GREEN";
-            lastX = 0;
-            moveX = 0;
-            moveY = 0;
         }
 
         //run ball
-        if (trigger == 0 && moveX < -8 && nextMove) {
-            ballX = 200;
-            color_s6 = "YELLOW";
+        if (trigger == 0 && nextMove && round(rotationX) >=75 && round(rotationX) <=95 && round(accelerationX) <= -3  ){
+            // ballX = 200;
+            // color = "YELLOW";
+            scene[state].time(6);
             trigger = 1;
             nextMove = false;
         }
-        if (trigger == 1 && moveY > 7 && nextMove) {
-            ballY = windowHeight / 2 + 200;
-            color_s6 = "BLACK";
+        if (trigger == 1 && nextMove && round(rotationX) >=75 && round(rotationX) <=95 && round(accelerationY) >= 10){
+            // ballY = windowHeight / 2 + 200;
+            // color = "BLACK";
+            scene[state].time(8);
             trigger = 2;
             nextMove = false;
         }
-        if (trigger == 2 && moveX > 8 && nextMove) {
-            ballX = 100;
-            ballY = windowHeight / 2 + 200;
-            color_s6 = "PINK";
+        if (trigger == 2 && nextMove && round(rotationX) >=75 && round(rotationX) <=95 && round(accelerationY) >= 3){
+            // ballX = 100;
+            // ballY = windowHeight / 2 + 200;
+            // color = "PINK";
+            scene[state].time(16);
             trigger = 3;
             nextMove = false;
         }
+        if (trigger == 3 && round(accelerationX) == 0 && round(accelerationY) == 0 && round(accelerationZ) == 0) {
+            // ballX = 100;
+            // ballY = windowHeight / 2;
+            trigger = 0;
+            // color = "RED";
+        }	
+    }
+    //. play video
+    if(round(scene[state].time())==0){
+        scene[state].time(2);
+    } else if (round(scene[state].time())==5){
+        scene[state].pause();
+    } else if (round(scene[state].time())==7){
+        scene[state].pause();
+    } else if (round(scene[state].time())==15){
+        scene[state].pause();
+    }else if (round(scene[state].time())==22){
+        scene[state].pause();
     }
 }
 
