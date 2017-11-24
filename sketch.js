@@ -214,14 +214,17 @@ function draw() {
     }else if (state ==6){
         image(scene[state],windowWidth / 2, windowHeight / 2);
         console.log("in 6");
-        console.log("video time: "+round(scene[state].time()));
+        text("video time: "+scene[state].time(),20,50);
         textSize(40);
         textAlign(LEFT);
         fill("BLACK");
-        text("accelerationX = " + round(accelerationX) + "Y =" + round(accelerationY) + "Z =" + round(accelerationZ), 20, 50);
+        text("accelerationX = " + round(accelerationX) + "Y =" + round(accelerationY) + "Z =" + round(accelerationZ), 20, 200);
         fill("YELLOW");
         text("rotationX = " + round(rotationX) + " | ro Y =" + round(rotationY)+ " | ro Z =" + round(rotationZ), 20, 250);
-        text("trigger: " + trigger + "| next move: " + nextMove, 20, 350);
+        fill("RED");
+        text("trigger: " + trigger ,20,350);
+        text("next move: " + nextMove, 20, 450);
+        text("playing: " +playing, 20,500);
         text("touching: " + operating, 20, 550);
         fill(color_s6);
         checkSaw();
@@ -434,7 +437,7 @@ function checkSaw() {
         if (trigger == 0 && nextMove && round(rotationX) >=75 && round(rotationX) <=95 && round(accelerationX) <= -3  ){
             // ballX = 200;
             // color = "YELLOW";
-            scene[state].time(6);
+            scene[state].time(5.1);
             trigger = 1;
             nextMove = false;
         }
@@ -456,14 +459,14 @@ function checkSaw() {
         if (trigger == 3 && round(accelerationX) == 0 && round(accelerationY) == 0 && round(accelerationZ) == 0) {
             // ballX = 100;
             // ballY = windowHeight / 2;
-            trigger = 0;
+//            trigger = 0;
             // color = "RED";
         }	
     }
     //. play video
     if(round(scene[state].time())==0){
         scene[state].time(2);
-    } else if (round(scene[state].time())==5){
+    } else if (trigger==0&&round(scene[state].time())==5){
         scene[state].pause();
     } else if (round(scene[state].time())==7){
         scene[state].pause();
