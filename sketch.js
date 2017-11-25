@@ -148,12 +148,14 @@ function draw() {
 //            } else if(curRotation>windowWidth){
 //                curRotation=275;
 //            }
+           
             image(pic1, round(curRotation)*7, windowHeight / 2, pic1.width*5, pic1.height*5);
             fill(255,0,0,alpha);
             ellipse(220+(round(curRotation)*7),windowHeight/2-120,50,50);
             textAlign(CENTER);
             fill(color, 0, 0, 255);
             textSize(50);
+            text("now ro z", 150,500);
             text("WELCOME to Fab lab!", windowWidth/2,100 );
             textSize(30);
             text("We have many machines and materials for you to explore. However, since you are first time here, how about making some basic cut with one of the most common machines.Let's use the table saw(: ", 80, 150, windowWidth-120, windowHeight/2);
