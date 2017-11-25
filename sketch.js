@@ -17,7 +17,7 @@ var matt_x,matt_y,isCut;
 
 //state 6
 var trigger, color_s6;
-var nextMove, operating;
+var nextMove, operating,howto;
 
 function preload(){
     locationData =  getCurrentPosition();
@@ -43,7 +43,7 @@ function setup() {
         scene[i].hide();
     }
     //to hide the extra video on html canvas
-    state=6;
+    state=1;
     scene[state].play() //to show first frame of the video
     scene[state].pause(); //to stop it from playing right away
     password=createInput();
@@ -71,6 +71,7 @@ function setup() {
     color_s6 = "GREEN";
     nextMove = false;
     operating = false;
+    howto="";
 
 }
 function doThisOnLocation(position){
@@ -208,18 +209,21 @@ function draw() {
     }else if (state ==6){
         image(scene[state],windowWidth / 2, windowHeight / 2);
         console.log("in 6");
-        text("video time: "+scene[state].time(),20,50);
+        //        text("video time: "+scene[state].time(),20,50);
         textSize(40);
         textAlign(LEFT);
-        fill("BLACK");
-        text("accelerationX = " + round(accelerationX) + "Y =" + round(accelerationY) + "Z =" + round(accelerationZ), 20, 200);
-        fill("YELLOW");
-        text("rotationX = " + round(rotationX) + " | ro Y =" + round(rotationY)+ " | ro Z =" + round(rotationZ), 20, 250);
+        //        fill("BLACK");
+        //        text("accelerationX = " + round(accelerationX) + "Y =" + round(accelerationY) + "Z =" + round(accelerationZ), 20, 200);
+        //        fill("YELLOW");
+        //        text("rotationX = " + round(rotationX) + " | ro Y =" + round(rotationY)+ " | ro Z =" + round(rotationZ), 20, 250);
         fill("RED");
-        text("trigger: " + trigger ,20,350);
-        text("next move: " + nextMove, 20, 450);
-        text("playing: " +playing, 20,500);
-        text("touching: " + operating, 20, 550);
+        text("step: " + trigger ,20,350);
+        text("touching: " + operating, 20, 400);
+        fill("YELLOW");
+        text(howto,20,450,windowWidth/2-100,windowHeight/2);
+        //        text("next move: " + nextMove, 20, 450);
+        //        text("playing: " +playing, 20,500);
+
         fill(color_s6);
         checkSaw();
 
@@ -425,20 +429,22 @@ function checkSaw() {
 
         //run ball
         if (trigger == 0 && nextMove && round(rotationX) >=75 && round(rotationX) <=95 && round(accelerationX) <= -3  ){
-            frame+=0.25;
+            howto="While still pressing the button, pull the handler close to you."
             scene[state].play();
             scene[state].time(6);
             trigger = 1;
             nextMove = false;
         }
         if (trigger == 1 && nextMove && round(rotationX) >=75 && round(rotationX) <=95 && round(accelerationY) >= 10){
-             scene[state].play();
+            howto="While still pressing the button, pull down the handler."
+            scene[state].play();
             scene[state].time(8);
             trigger = 2;
             nextMove = false;
         }
         if (trigger == 2 && nextMove && round(rotationX) >=75 && round(rotationX) <=95 && round(accelerationY) >= 3){
-             scene[state].play();
+            howto="While still pressing the button, push the handler back to cut your materail."
+            scene[state].play();
             scene[state].time(16);
             trigger = 3;
             nextMove = false;
@@ -450,7 +456,8 @@ function checkSaw() {
     // 
     if(round(scene[state].time())==0){
         scene[state].time(2);
-    } else if (round(scene[state].time())==5){
+        howto="Press button with your thumb and hold it."
+    } else if (round(scene[state].time())==5){    
         scene[state].pause();
     } else if (round(scene[state].time())==7){
         scene[state].pause();
