@@ -148,10 +148,11 @@ function draw() {
 //            } else if(curRotation>windowWidth){
 //                curRotation=275;
 //            }
-           
-            image(pic1, round(curRotation)*7, windowHeight / 2, pic1.width*5, pic1.height*5);
+            imageMode(CORNER,CENTER);
+            image(pic1, round(curRotation)*7, 0, pic1.width*5, pic1.height*5);
+            imageMode(CENTER);
             fill(255,0,0,alpha);
-            ellipse(220+(round(curRotation)*7),windowHeight/2-120,50,50);
+            ellipse(((pic.widht/2)-80)+(round(curRotation)*7),windowHeight/2-120,50,50);
             textAlign(CENTER);
             fill(color, 0, 0, 255);
             textSize(50);
