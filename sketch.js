@@ -450,7 +450,7 @@ function checkSaw() {
     // 
     if(round(scene[state].time())==0){
         scene[state].time(2);
-    } else if (trigger==0&&round(scene[state].time())==5){
+    } else if (round(scene[state].time())==5){
         scene[state].pause();
     } else if (round(scene[state].time())==7){
         scene[state].pause();
