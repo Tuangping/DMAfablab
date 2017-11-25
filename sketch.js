@@ -16,9 +16,8 @@ var rY, pRY, frame;
 var matt_x,matt_y,isCut;
 
 //state 6
-var ballX, ballY;
 var trigger, color_s6;
-var moveX, moveY, moveZ, lastX, lastY, lastZ, nextMove, operating;
+var nextMove, operating;
 
 function preload(){
     locationData =  getCurrentPosition();
@@ -45,8 +44,8 @@ function setup() {
     }
     //to hide the extra video on html canvas
     state=6;
-    //    scene[state].play() //to show first frame of the video
-    //    scene[state].pause(); //to stop it from playing right away
+    scene[state].play() //to show first frame of the video
+    scene[state].pause(); //to stop it from playing right away
     password=createInput();
     password.position(windowWidth/2-100,windowHeight/2-50);
     password.attribute('size','20');
@@ -68,13 +67,8 @@ function setup() {
     matt_x = windowWidth/2-60;
     matt_y = windowHeight-200;
     //////////
-    ballX = 100;
-    ballY = windowHeight / 2;
     trigger = 0;
     color_s6 = "GREEN";
-    lastX = 0;
-    moveX = 0;
-    moveY = 0;
     nextMove = false;
     operating = false;
 
@@ -228,20 +222,19 @@ function draw() {
         text("touching: " + operating, 20, 550);
         fill(color_s6);
         checkSaw();
-        ellipse(ballX, ballY, 50, 50);
 
     }
 }//password is 34118 (LAT 34.07603371, -118.44086627)
 function touchStarted() {
     if(clickAble){
-        //        if(state==6){
-        //            if(operating){
-        //                scene[state].play();
-        //            }else{
-        //                scene[state].pause();
-        //            }
-        //        }
-        //    }else{
+//        if(state==6){
+//            if(operating){
+//                scene[state].play();
+//            }else{
+//                scene[state].pause();
+//            }
+//        }
+//    }else{
         if (playing && !showpic) {
             alpha = 100;
             scene[state].pause();
@@ -253,92 +246,90 @@ function touchStarted() {
         } else{
             scene[state].play();
         }
-        //        }
-        ///////--------------------------------////////
-        if(state==1 ||state==2){
-            if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
-                if (mouseY < (windowHeight / 2) + 80 && mouseY > (windowHeight / 2) - 20) {
-                    console.log("hit");
-                    alpha = 0;
-                }
-            } else {
-                color = 255;
-
-            }
-        }else if (state==3){
-            // ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 180, 100, 100);
-            if (mouseX > (windowWidth / 2) - 80 && mouseX < (windowWidth / 2) + 20) {
-                if (mouseY < (windowHeight / 2) + 230 && mouseY > (windowHeight / 2) + 130) {
-                    console.log("hit");
-                    alpha = 0;
-                }
-            } else {
-                color = 255;
-
-            }
-        }else if (state==4){
-            if(round(scene[state].time())==0){
-                if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
-                    if (mouseY < (windowHeight / 2) + 180 && mouseY > (windowHeight / 2) + 130) {
-                        console.log("hit");
-                        alpha = 0;
-                    }
-                } else {
-                    color = 255;
-
-                }
-            }else if(round(scene[state].time())==4){  //windowWidth-200,windowHeight-50, 100, 100
-                if (mouseX > windowWidth - 250 && mouseX < windowWidth-150) {
-                    if (mouseY < windowHeight && mouseY > windowHeight - 100) {
-                        console.log("hit");
-                        alpha = 0;
-                        scene[state].time(5);
-                    }
-                } else {
-                    color = 255;
-
-                }
-            }else if(round(scene[state].time())==11){ //ellipse(250,windowHeight/2-100, 100, 100);
-
-                if (mouseX > 200 && mouseX < 300) {
-                    if (mouseY < 850 && mouseY > 720) {
-                        console.log("hit");
-                        alpha = 0;
-                        scene[state].time(12);
-                    }
-                } else {
-                    color = 255;
-
-                }
-            }else if(round(scene[state].time())>=25){
-                //                matt_x = mouseX;
-                //                matt_y = mouseY;
-                if (!isCut){
-                    scene[state].play();
-                    clickAble=false;
-                } else{
-                    state=5;
-                    isCut=false;
-                }
-
-            }
-        }else if (state==5){
-            //                ellipse(windowWidth / 2, 200, 100, 100);
-            if (mouseX > windowWidth/2 - 50 && mouseX < windowWidth/2+150) {
-                if (mouseY < 250 && mouseY > 150 ) {
-                    console.log("hit");
-                    alpha = 0;
-                }
-            } else {
-                color = 255;
-
+//    }
+    ///////--------------------------------////////
+    if(state==1 ||state==2){
+        if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
+            if (mouseY < (windowHeight / 2) + 80 && mouseY > (windowHeight / 2) - 20) {
+                console.log("hit");
+                alpha = 0;
             }
         } else {
-            console.log("clickable in 6");
-            operating =true;
-        }
+            color = 255;
 
-        playing = !playing;
+        }
+    }else if (state==3){
+        // ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 180, 100, 100);
+        if (mouseX > (windowWidth / 2) - 80 && mouseX < (windowWidth / 2) + 20) {
+            if (mouseY < (windowHeight / 2) + 230 && mouseY > (windowHeight / 2) + 130) {
+                console.log("hit");
+                alpha = 0;
+            }
+        } else {
+            color = 255;
+
+        }
+    }else if (state==4){
+        if(round(scene[state].time())==0){
+            if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
+                if (mouseY < (windowHeight / 2) + 180 && mouseY > (windowHeight / 2) + 130) {
+                    console.log("hit");
+                    alpha = 0;
+                }
+            } else {
+                color = 255;
+
+            }
+        }else if(round(scene[state].time())==4){  //windowWidth-200,windowHeight-50, 100, 100
+            if (mouseX > windowWidth - 250 && mouseX < windowWidth-150) {
+                if (mouseY < windowHeight && mouseY > windowHeight - 100) {
+                    console.log("hit");
+                    alpha = 0;
+                    scene[state].time(5);
+                }
+            } else {
+                color = 255;
+
+            }
+        }else if(round(scene[state].time())==11){ //ellipse(250,windowHeight/2-100, 100, 100);
+
+            if (mouseX > 200 && mouseX < 300) {
+                if (mouseY < 850 && mouseY > 720) {
+                    console.log("hit");
+                    alpha = 0;
+                    scene[state].time(12);
+                }
+            } else {
+                color = 255;
+
+            }
+        }else if(round(scene[state].time())>=25){
+            if (!isCut){
+                scene[state].play();
+                clickAble=false;
+            } else{
+                state=5;
+                isCut=false;
+            }
+
+        }
+    }else if (state==5){
+        //                ellipse(windowWidth / 2, 200, 100, 100);
+        if (mouseX > windowWidth/2 - 50 && mouseX < windowWidth/2+150) {
+            if (mouseY < 250 && mouseY > 150 ) {
+                console.log("hit");
+                alpha = 0;
+            }
+        } else {
+            color = 255;
+
+        }
+    } else {
+        console.log("clickable in 6");
+        operating =true;
+    }
+
+    playing = !playing;
     }
     return false;
 }
@@ -435,46 +426,39 @@ function checkSaw() {
 
         //run ball
         if (trigger == 0 && nextMove && round(rotationX) >=75 && round(rotationX) <=95 && round(accelerationX) <= -3  ){
-            // ballX = 200;
-            // color = "YELLOW";
+            frame+=0.25;
             scene[state].time(5.1);
             trigger = 1;
             nextMove = false;
         }
         if (trigger == 1 && nextMove && round(rotationX) >=75 && round(rotationX) <=95 && round(accelerationY) >= 10){
-            // ballY = windowHeight / 2 + 200;
-            // color = "BLACK";
             scene[state].time(8);
             trigger = 2;
             nextMove = false;
         }
         if (trigger == 2 && nextMove && round(rotationX) >=75 && round(rotationX) <=95 && round(accelerationY) >= 3){
-            // ballX = 100;
-            // ballY = windowHeight / 2 + 200;
-            // color = "PINK";
             scene[state].time(16);
             trigger = 3;
             nextMove = false;
         }
         if (trigger == 3 && round(accelerationX) == 0 && round(accelerationY) == 0 && round(accelerationZ) == 0) {
-            // ballX = 100;
-            // ballY = windowHeight / 2;
-//            trigger = 0;
-            // color = "RED";
+
         }	
     }
-    //. play video
-    if(round(scene[state].time())==0){
-        scene[state].time(2);
-    } else if (trigger==0&&round(scene[state].time())==5){
-        scene[state].pause();
-    } else if (round(scene[state].time())==7){
-        scene[state].pause();
-    } else if (round(scene[state].time())==15){
-        scene[state].pause();
-    }else if (round(scene[state].time())==22){
-        scene[state].pause();
-    }
+    // able play video on computer
+        if(!nextMove){
+            if(round(scene[state].time())==0){
+                scene[state].time(2);
+            } else if (trigger==0&&round(scene[state].time())==5){
+                scene[state].pause();
+            } else if (round(scene[state].time())==7){
+                scene[state].pause();
+            } else if (round(scene[state].time())==15){
+                scene[state].pause();
+            }else if (round(scene[state].time())==22){
+                scene[state].pause();
+            }
+        }
 }
 
 //function mousePressed() {
