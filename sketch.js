@@ -12,6 +12,7 @@ var myFont,blink;
 var blade, wheel, graphic_y;
 var rotateDirection = 'clockwise';
 var rY, pRY, frame;
+var endState;
 
 //state 4
 var matt_x,matt_y,isCut;
@@ -30,7 +31,7 @@ function setup() {
     console.log(locationData.latitude);
     navigator.geolocation.watchPosition(doThisOnLocation);   
     background("RED");
-    blink=0;
+    blink=true;
     textAlign(CENTER);
     textFont(myFont);
     textSize(50);
@@ -47,7 +48,7 @@ function setup() {
         scene[i].hide();
     }
     //to hide the extra video on html canvas
-    state=1;
+    state=3;
     scene[state].play() //to show first frame of the video
     scene[state].pause(); //to stop it from playing right away
     password=createInput();
@@ -102,20 +103,18 @@ function draw() {
     //    }
     //    pop();
     ////////
-
+    blinking();
     noStroke();
-    console.log("isPlaying: "+playing);
-    console.log("showpic: "+showpic);
+    //    console.log("isPlaying: "+playing);
+    //    console.log("showpic: "+showpic);
     if (state==1){
-      
         image(scene[state],windowWidth / 2, windowHeight / 2);
         doThisOnLocation(locationData);
-        console.log("lat: " + locationData.latitude);
-        console.log("long: " + locationData.longitude);
         fill(color, 0, 0, alpha);
         ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 30, 100, 100);
         if(playing) {
-            console.log("video time: "+round(scene[state].time()))
+            //            console.log("video time: "+round(scene[state].time()))
+            blink = false;
             textAlign(CENTER);
             textSize(16);
             fill("YELLOW");
@@ -131,10 +130,8 @@ function draw() {
                 showpic=true;
             }
                                                         }
-        }else{
-              blinking();
-        }
-        if(showpic){
+        }else if(showpic){
+            blink=true;
             password.remove();
             rotations.push(rotationY);
             rotations.shift();
@@ -143,27 +140,27 @@ function draw() {
                 curRotation += rotations[i];
             }
             curRotation /= rotations.length;
-//            if(curRotation<5){
-//                curRotation=0;
-//            } else if(curRotation>windowWidth){
-//                curRotation=275;
-//            }
-//            imageMode(CORNER);
+            //            if(curRotation<5){
+            //                curRotation=0;
+            //            } else if(curRotation>windowWidth){
+            //                curRotation=275;
+            //            }
+            //            imageMode(CORNER);
             image(pic1, -(round(curRotation)*20), windowHeight/2, pic1.width*5, pic1.height*5);
-//            imageMode(CENTER);
+            //            imageMode(CENTER);
             fill(255,0,0,alpha);
             ellipse(((windowWidth/2)-280)+(-(round(curRotation)*20)),windowHeight/2-120,50,50);
             textAlign(CENTER);
             fill(color, 0, 0, 255);
             textSize(50);
-//            text("now ro Y", 150,500);
+            //            text("now ro Y", 150,500);
             text("WELCOME to Fab lab!", windowWidth/2,100 );
             textSize(30);
             text("We have many machines and materials for you to explore. However, since you are first time here, how about making some basic cut with one of the most common machines.Let's use the table saw(: ", 80, 150, windowWidth-120, windowHeight/2);
-            text("curRo= "+(-(round(curRotation)*10)), 150, windowHeight - 100);
-            fill("YELLOW");
-            text("Ro Y = "+round(rotationY), 400, windowHeight - 100);
-         
+            //            text("curRo= "+(-(round(curRotation)*10)), 150, windowHeight - 100);
+            fill(255,255,0, alpha);
+            //            text("Ro Y = "+round(rotationY), 400, windowHeight - 100);
+            text("Find a table saw", 300, windowHeight-100);
         }
     }else if (state==2){
         image(scene[state],windowWidth / 2, windowHeight / 2);
@@ -174,20 +171,31 @@ function draw() {
         console.log("video time: "+round(scene[state].time()));
         password.remove();
         fill(color, 0, 0, 255);
+        textAlign(LEFT);
         textSize(50);
-        text(rotateDirection, windowWidth-200, windowHeight/2 - 50);
-        text(playing + ": " + round(scene[state].time()), 150, 150);
+        text(rotateDirection, windowWidth-400, windowHeight/2 - 50,windowWidth-100,windowHeight);
+        if(scene[state].time()>=4){
+            text("degree" + ": " + round(scene[state].time()*45/scene[state].duration()), 50, 150);
+        }
     }else if (state==3){
         image(scene[state],windowWidth / 2, windowHeight / 2);
         rotateWheel();
+        noStroke();
         fill(color, 0, 0, alpha);
         ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 180, 100, 100);
         console.log("in 3");
         console.log("video time: "+round(scene[state].time()));
+        fill(color, 0, 0, 100);
+        strokeWeight(5);
+        stroke("RED");
+        rect(windowWidth/2,370,500,40);
+        noStroke();
         fill(color, 0, 0, 255);
+        textAlign(LEFT);
         textSize(50);
-        text(rotateDirection, windowWidth-200, windowHeight/2 - 50);
-        text(playing + ": " + round(scene[state].time()), 150, 150);
+        text(rotateDirection, windowWidth-400, windowHeight/2 - 50,windowWidth-100,windowHeight);
+        text(nf(round(scene[state].duration())*0.5/round(scene[state].time()),1,2) , 50, 150);
+        text("inch heigher from material", 50, 200);
 
     }else if (state ==4){
         image(scene[state],windowWidth / 2, windowHeight / 2);
@@ -251,28 +259,23 @@ function draw() {
 }//password is 34118 (LAT 34.07603371, -118.44086627)
 function touchStarted() {
     if(clickAble){
-        //        if(state==6){
-        //            if(operating){
-        //                scene[state].play();
-        //            }else{
-        //                scene[state].pause();
-        //            }
-        //        }
-        //    }else{
         if (playing && !showpic) {
             alpha = 100;
+            blink=true;
             scene[state].pause();
         } else if (!playing && !showpic) {
+            blink=false;
             scene[state].play();
         } else if (!playing && showpic){
             state= 2;
+            blink=true;
             showpic=false;
         } else{
             scene[state].play();
         }
         //    }
         ///////--------------------------------////////
-        if(state==1 ||state==2){
+        if(state==1 && !showpic){
             if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
                 if (mouseY < (windowHeight / 2) + 80 && mouseY > (windowHeight / 2) - 20) {
                     console.log("hit");
@@ -282,7 +285,31 @@ function touchStarted() {
                 color = 255;
 
             }
-        }else if (state==3){
+
+        }else if (state==1 && showpic){
+            if (mouseX > ((windowWidth / 2) - 300) && mouseX < (windowWidth / 2) - 250) {
+                if (mouseY < (windowHeight / 2) -95 && mouseY > (windowHeight / 2) - 145) {
+                    console.log("hit!!!!!!");
+                    alpha = 0;
+                    blink=false;
+                } else {
+                    color = 255;
+
+                }
+
+            }
+        }   else if (state==2){
+            if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
+                if (mouseY < (windowHeight / 2) + 80 && mouseY > (windowHeight / 2) - 20) {
+                    console.log("hit");
+                    alpha = 0;
+                }
+            } else {
+                color = 255;
+
+            }
+
+        } else if (state==3){
             // ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 180, 100, 100);
             if (mouseX > (windowWidth / 2) - 80 && mouseX < (windowWidth / 2) + 20) {
                 if (mouseY < (windowHeight / 2) + 230 && mouseY > (windowHeight / 2) + 130) {
@@ -368,7 +395,6 @@ function touchMoved() {
     return false;
 }
 function rotateWheel() {
-    var endState;
     if (state ==5){
         endState=20;
     }else{
@@ -400,7 +426,7 @@ function rotateWheel() {
     if(round(scene[state].time())==endState){
         fill(0,255,100);
         textSize(40);
-        rotateDirection="Next, adjust the blade's height.";
+        rotateDirection="Press button to next step.";
         scene[state].pause();
         alpha=100;
         if(mouseIsPressed){
@@ -489,11 +515,15 @@ function checkSaw() {
 }
 
 function blinking(){
-    if (alpha>=180){
+    if(blink){
+        if (alpha>=180){
+            alpha = 0;
+        }else {
+            alpha +=20;
+        }
+    }else{
         alpha = 0;
-    }else {
-        alpha +=20;
-    }    
+    }
 }
 //function mousePressed() {
 //    if(state==1 ||state==2){
