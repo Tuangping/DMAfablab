@@ -136,7 +136,7 @@ function draw() {
         }
         if(showpic){
             password.remove();
-            rotations.push(rotationY);
+            rotations.push(rotationZ);
             rotations.shift();
             var curRotation = 0;
             for (var i = 0; i < rotations.length; i++) {
