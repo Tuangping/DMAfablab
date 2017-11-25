@@ -227,14 +227,14 @@ function draw() {
 }//password is 34118 (LAT 34.07603371, -118.44086627)
 function touchStarted() {
     if(clickAble){
-//        if(state==6){
-//            if(operating){
-//                scene[state].play();
-//            }else{
-//                scene[state].pause();
-//            }
-//        }
-//    }else{
+        //        if(state==6){
+        //            if(operating){
+        //                scene[state].play();
+        //            }else{
+        //                scene[state].pause();
+        //            }
+        //        }
+        //    }else{
         if (playing && !showpic) {
             alpha = 100;
             scene[state].pause();
@@ -246,33 +246,11 @@ function touchStarted() {
         } else{
             scene[state].play();
         }
-//    }
-    ///////--------------------------------////////
-    if(state==1 ||state==2){
-        if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
-            if (mouseY < (windowHeight / 2) + 80 && mouseY > (windowHeight / 2) - 20) {
-                console.log("hit");
-                alpha = 0;
-            }
-        } else {
-            color = 255;
-
-        }
-    }else if (state==3){
-        // ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 180, 100, 100);
-        if (mouseX > (windowWidth / 2) - 80 && mouseX < (windowWidth / 2) + 20) {
-            if (mouseY < (windowHeight / 2) + 230 && mouseY > (windowHeight / 2) + 130) {
-                console.log("hit");
-                alpha = 0;
-            }
-        } else {
-            color = 255;
-
-        }
-    }else if (state==4){
-        if(round(scene[state].time())==0){
+        //    }
+        ///////--------------------------------////////
+        if(state==1 ||state==2){
             if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
-                if (mouseY < (windowHeight / 2) + 180 && mouseY > (windowHeight / 2) + 130) {
+                if (mouseY < (windowHeight / 2) + 80 && mouseY > (windowHeight / 2) - 20) {
                     console.log("hit");
                     alpha = 0;
                 }
@@ -280,56 +258,77 @@ function touchStarted() {
                 color = 255;
 
             }
-        }else if(round(scene[state].time())==4){  //windowWidth-200,windowHeight-50, 100, 100
-            if (mouseX > windowWidth - 250 && mouseX < windowWidth-150) {
-                if (mouseY < windowHeight && mouseY > windowHeight - 100) {
+        }else if (state==3){
+            // ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 180, 100, 100);
+            if (mouseX > (windowWidth / 2) - 80 && mouseX < (windowWidth / 2) + 20) {
+                if (mouseY < (windowHeight / 2) + 230 && mouseY > (windowHeight / 2) + 130) {
                     console.log("hit");
                     alpha = 0;
-                    scene[state].time(5);
                 }
             } else {
                 color = 255;
 
             }
-        }else if(round(scene[state].time())==11){ //ellipse(250,windowHeight/2-100, 100, 100);
+        }else if (state==4){
+            if(round(scene[state].time())==0){
+                if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
+                    if (mouseY < (windowHeight / 2) + 180 && mouseY > (windowHeight / 2) + 130) {
+                        console.log("hit");
+                        alpha = 0;
+                    }
+                } else {
+                    color = 255;
 
-            if (mouseX > 200 && mouseX < 300) {
-                if (mouseY < 850 && mouseY > 720) {
+                }
+            }else if(round(scene[state].time())==4){  //windowWidth-200,windowHeight-50, 100, 100
+                if (mouseX > windowWidth - 250 && mouseX < windowWidth-150) {
+                    if (mouseY < windowHeight && mouseY > windowHeight - 100) {
+                        console.log("hit");
+                        alpha = 0;
+                        scene[state].time(5);
+                    }
+                } else {
+                    color = 255;
+
+                }
+            }else if(round(scene[state].time())==11){ //ellipse(250,windowHeight/2-100, 100, 100);
+
+                if (mouseX > 200 && mouseX < 300) {
+                    if (mouseY < 850 && mouseY > 720) {
+                        console.log("hit");
+                        alpha = 0;
+                        scene[state].time(12);
+                    }
+                } else {
+                    color = 255;
+
+                }
+            }else if(round(scene[state].time())>=25){
+                if (!isCut){
+                    scene[state].play();
+                    clickAble=false;
+                } else{
+                    state=5;
+                    isCut=false;
+                }
+
+            }
+        }else if (state==5){
+            if (mouseX > windowWidth/2 - 50 && mouseX < windowWidth/2+150) {
+                if (mouseY < 250 && mouseY > 150 ) {
                     console.log("hit");
                     alpha = 0;
-                    scene[state].time(12);
                 }
             } else {
                 color = 255;
 
-            }
-        }else if(round(scene[state].time())>=25){
-            if (!isCut){
-                scene[state].play();
-                clickAble=false;
-            } else{
-                state=5;
-                isCut=false;
-            }
-
-        }
-    }else if (state==5){
-        //                ellipse(windowWidth / 2, 200, 100, 100);
-        if (mouseX > windowWidth/2 - 50 && mouseX < windowWidth/2+150) {
-            if (mouseY < 250 && mouseY > 150 ) {
-                console.log("hit");
-                alpha = 0;
             }
         } else {
-            color = 255;
-
+            console.log("clickable in 6");
+            operating =true;
         }
-    } else {
-        console.log("clickable in 6");
-        operating =true;
-    }
 
-    playing = !playing;
+        playing = !playing;
     }
     return false;
 }
@@ -427,16 +426,19 @@ function checkSaw() {
         //run ball
         if (trigger == 0 && nextMove && round(rotationX) >=75 && round(rotationX) <=95 && round(accelerationX) <= -3  ){
             frame+=0.25;
+            scene[state].play();
             scene[state].time(5.1);
             trigger = 1;
             nextMove = false;
         }
         if (trigger == 1 && nextMove && round(rotationX) >=75 && round(rotationX) <=95 && round(accelerationY) >= 10){
+             scene[state].play();
             scene[state].time(8);
             trigger = 2;
             nextMove = false;
         }
         if (trigger == 2 && nextMove && round(rotationX) >=75 && round(rotationX) <=95 && round(accelerationY) >= 3){
+             scene[state].play();
             scene[state].time(16);
             trigger = 3;
             nextMove = false;
@@ -445,21 +447,20 @@ function checkSaw() {
 
         }	
     }
-    // able play video on computer
-        if(!nextMove){
-            if(round(scene[state].time())==0){
-                scene[state].time(2);
-            } else if (trigger==0&&round(scene[state].time())==5){
-                scene[state].pause();
-            } else if (round(scene[state].time())==7){
-                scene[state].pause();
-            } else if (round(scene[state].time())==15){
-                scene[state].pause();
-            }else if (round(scene[state].time())==22){
-                scene[state].pause();
-            }
-        }
+    // 
+    if(round(scene[state].time())==0){
+        scene[state].time(2);
+    } else if (trigger==0&&round(scene[state].time())==5){
+        scene[state].pause();
+    } else if (round(scene[state].time())==7){
+        scene[state].pause();
+    } else if (round(scene[state].time())==15){
+        scene[state].pause();
+    }else if (round(scene[state].time())==22){
+        scene[state].pause();
+    }
 }
+
 
 //function mousePressed() {
 //    if(state==1 ||state==2){
