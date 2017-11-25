@@ -148,7 +148,7 @@ function draw() {
 //            } else if(curRotation>windowWidth){
 //                curRotation=275;
 //            }
-            imageMode(CORNER,CENTER);
+            imageMode(CORNER);
             image(pic1, round(curRotation)*7, 0, pic1.width*5, pic1.height*5);
             imageMode(CENTER);
             fill(255,0,0,alpha);
