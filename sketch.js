@@ -427,7 +427,7 @@ function checkSaw() {
         if (trigger == 0 && nextMove && round(rotationX) >=75 && round(rotationX) <=95 && round(accelerationX) <= -3  ){
             frame+=0.25;
             scene[state].play();
-            scene[state].time(5.1);
+            scene[state].time(6);
             trigger = 1;
             nextMove = false;
         }
