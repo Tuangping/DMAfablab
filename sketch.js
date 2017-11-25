@@ -136,18 +136,18 @@ function draw() {
         }
         if(showpic){
             password.remove();
-            rotations.push(rotationZ);
+            rotations.push(rotationY);
             rotations.shift();
             var curRotation = 0;
             for (var i = 0; i < rotations.length; i++) {
                 curRotation += rotations[i];
             }
             curRotation /= rotations.length;
-            if(curRotation<5){
-                curRotation=0;
-            } else if(curRotation>windowWidth){
-                curRotation=275;
-            }
+//            if(curRotation<5){
+//                curRotation=0;
+//            } else if(curRotation>windowWidth){
+//                curRotation=275;
+//            }
             image(pic1, round(curRotation)*7, windowHeight / 2, pic1.width*5, pic1.height*5);
             fill(255,0,0,alpha);
             ellipse(220+(round(curRotation)*7),windowHeight/2-120,50,50);
