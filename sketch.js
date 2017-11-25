@@ -149,10 +149,10 @@ function draw() {
 //                curRotation=275;
 //            }
 //            imageMode(CORNER);
-            image(pic1, round(curRotation)*7, windowHeight/2, pic1.width*5, pic1.height*5);
+            image(pic1, -(round(curRotation)*10), windowHeight/2, pic1.width*5, pic1.height*5);
 //            imageMode(CENTER);
             fill(255,0,0,alpha);
-            ellipse(((windowWidth/2)-280)+(round(curRotation)*7),windowHeight/2-120,50,50);
+            ellipse(((windowWidth/2)-280)+(-(round(curRotation)*10)),windowHeight/2-120,50,50);
             textAlign(CENTER);
             fill(color, 0, 0, 255);
             textSize(50);
@@ -160,7 +160,7 @@ function draw() {
             text("WELCOME to Fab lab!", windowWidth/2,100 );
             textSize(30);
             text("We have many machines and materials for you to explore. However, since you are first time here, how about making some basic cut with one of the most common machines.Let's use the table saw(: ", 80, 150, windowWidth-120, windowHeight/2);
-            text("curRo= "+round(curRotation), 150, windowHeight - 100);
+            text("curRo= "+(-(round(curRotation)*10)), 150, windowHeight - 100);
             fill("YELLOW");
             text("Ro Y = "+round(rotationY), 300, windowHeight - 100);
          
