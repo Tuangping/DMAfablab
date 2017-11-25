@@ -136,7 +136,7 @@ function draw() {
         }
         if(showpic){
             password.remove();
-            rotations.push(rotationZ);
+            rotations.push(rotationY);
             rotations.shift();
             var curRotation = 0;
             for (var i = 0; i < rotations.length; i++) {
@@ -156,13 +156,13 @@ function draw() {
             textAlign(CENTER);
             fill(color, 0, 0, 255);
             textSize(50);
-            text("now ro z", 150,500);
+            text("now ro Y", 150,500);
             text("WELCOME to Fab lab!", windowWidth/2,100 );
             textSize(30);
             text("We have many machines and materials for you to explore. However, since you are first time here, how about making some basic cut with one of the most common machines.Let's use the table saw(: ", 80, 150, windowWidth-120, windowHeight/2);
             text("curRo= "+round(curRotation), 150, windowHeight - 100);
             fill("YELLOW");
-            text("Ro Z = "+round(rotationZ), 300, windowHeight - 100);
+            text("Ro Y = "+round(rotationY), 300, windowHeight - 100);
          
         }
     }else if (state==2){
