@@ -152,7 +152,7 @@ function draw() {
             image(pic1, round(curRotation)*7, 0, pic1.width*5, pic1.height*5);
             imageMode(CENTER);
             fill(255,0,0,alpha);
-            ellipse(((pic.widht/2)-80)+(round(curRotation)*7),windowHeight/2-120,50,50);
+            ellipse(((pic1.widht/2)-80)+(round(curRotation)*7),windowHeight/2-120,50,50);
             textAlign(CENTER);
             fill(color, 0, 0, 255);
             textSize(50);
