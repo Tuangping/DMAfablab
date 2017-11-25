@@ -48,7 +48,7 @@ function setup() {
         scene[i].hide();
     }
     //to hide the extra video on html canvas
-    state=3;
+    state=1;
     scene[state].play() //to show first frame of the video
     scene[state].pause(); //to stop it from playing right away
     password=createInput();
