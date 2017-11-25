@@ -6,6 +6,7 @@ var clickAble;
 //state1+ fablab180
 var pic1,x_pos, last_x, last_move, last_y;
 var rotations = [];
+var myFont,blink;
 
 // state 2-3,5
 var blade, wheel, graphic_y;
@@ -21,6 +22,7 @@ var nextMove, operating,howto;
 
 function preload(){
     locationData =  getCurrentPosition();
+    myFont = loadFont('font/LemonMilk.otf');
 }
 
 function setup() {
@@ -28,7 +30,9 @@ function setup() {
     console.log(locationData.latitude);
     navigator.geolocation.watchPosition(doThisOnLocation);   
     background("RED");
+    blink=0;
     textAlign(CENTER);
+    textFont(myFont);
     textSize(50);
     fill("BLACK");
     noStroke();
@@ -79,9 +83,9 @@ function doThisOnLocation(position){
     textSize(20);
     lat=position.latitude;
     lon=position.longitude;
-
-    text("Latitude: "+lat,170,200);
-    text("Longitude: "+lon,230,250);
+    textAlign(LEFT);
+    text("Latitude: "+lat,40,200);
+    text("Longitude: "+lon,40,250);
 }
 
 function draw() {
@@ -98,10 +102,12 @@ function draw() {
     //    }
     //    pop();
     ////////
+
     noStroke();
     console.log("isPlaying: "+playing);
     console.log("showpic: "+showpic);
     if (state==1){
+      
         image(scene[state],windowWidth / 2, windowHeight / 2);
         doThisOnLocation(locationData);
         console.log("lat: " + locationData.latitude);
@@ -125,10 +131,12 @@ function draw() {
                 showpic=true;
             }
                                                         }
+        }else{
+              blinking();
         }
         if(showpic){
             password.remove();
-            rotations.push(rotationZ);
+            rotations.push(rotationY);
             rotations.shift();
             var curRotation = 0;
             for (var i = 0; i < rotations.length; i++) {
@@ -141,9 +149,16 @@ function draw() {
                 curRotation=275;
             }
             image(pic1, round(curRotation)*7, windowHeight / 2, pic1.width*5, pic1.height*5);
-            textSize(30);
+            fill(255,0,0,alpha);
+            ellipse(220+(round(curRotation)*7),windowHeight/2-120,50,50);
+            textAlign(CENTER);
             fill(color, 0, 0, 255);
+            textSize(50);
+            text("WELCOME to Fab lab!", windowWidth/2,100 );
+            textSize(30);
+            text("We have many machines and materials for you to explore. However, since you are first time here, how about making some basic cut with one of the most common machines.Let's use the table saw(: ", 80, 150, windowWidth-120, windowHeight/2);
             text("curRo= "+round(curRotation), 150, windowHeight - 100);
+         
         }
     }else if (state==2){
         image(scene[state],windowWidth / 2, windowHeight / 2);
@@ -468,7 +483,13 @@ function checkSaw() {
     }
 }
 
-
+function blinking(){
+    if (alpha>=180){
+        alpha = 0;
+    }else {
+        alpha +=20;
+    }    
+}
 //function mousePressed() {
 //    if(state==1 ||state==2){
 //        if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
