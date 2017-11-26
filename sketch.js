@@ -123,7 +123,7 @@ function draw() {
             //        password.attribute('maxlength','5');
             if(lat>=33.5&&lat<34.5&&lon>=-119&&lon<-118){          if(scene[state].time()==scene[state].duration()){
                 console.log("show pic");
-                scene[state].stop();
+                scene[state].pause();
                 //state=2;
                 alpha = 100;
                 playing=false;
@@ -171,31 +171,42 @@ function draw() {
         console.log("video time: "+round(scene[state].time()));
         password.remove();
         fill(color, 0, 0, 255);
+        rect(0,windowHeight/2-320,windowWidth, 40);
         textAlign(LEFT);
+        text(rotateDirection,windowWidth/2+50, windowHeight/2 - 50);
         textSize(50);
-        text(rotateDirection, windowWidth-400, windowHeight/2 - 50,windowWidth-100,windowHeight);
         if(scene[state].time()>=4){
             text("degree" + ": " + round(scene[state].time()*45/scene[state].duration()), 50, 150);
         }
     }else if (state==3){
         image(scene[state],windowWidth / 2, windowHeight / 2);
+        console.log("in 3");
+        console.log("video time: "+round(scene[state].time()));
         rotateWheel();
         noStroke();
         fill(color, 0, 0, alpha);
         ellipse((windowWidth / 2) - 30, (windowHeight / 2) + 180, 100, 100);
-        console.log("in 3");
-        console.log("video time: "+round(scene[state].time()));
+        fill(color, color, 0, 255);
+        rect(0,windowHeight/2-320,windowWidth, 40);
+        textAlign(LEFT);
+        if(scene[state].time()<scene[state].duration()){
+            textSize(50);
+        } else{
+            textSize(30);
+        }
+        text(rotateDirection, windowWidth/2+50, windowHeight/2 - 50);
+        textSize(50);
+        fill(color, 0, 0, 255);
+        text(nf(round(scene[state].duration())*0.5/round(scene[state].time()),1,2) , 50, 150);
+        text("inch heigher from material", 50, 200);
         fill(color, 0, 0, 100);
         strokeWeight(5);
         stroke("RED");
-        rect(windowWidth/2,370,500,40);
+        rect(windowWidth/2,370,500,40);//material
         noStroke();
-        fill(color, 0, 0, 255);
-        textAlign(LEFT);
-        textSize(50);
-        text(rotateDirection, windowWidth-400, windowHeight/2 - 50,windowWidth-100,windowHeight);
-        text(nf(round(scene[state].duration())*0.5/round(scene[state].time()),1,2) , 50, 150);
-        text("inch heigher from material", 50, 200);
+        textSize(25);
+        fill(255,255,255,255);
+        text("material thickness",(windowWidth/2)+15,400);
 
     }else if (state ==4){
         image(scene[state],windowWidth / 2, windowHeight / 2);
@@ -268,6 +279,8 @@ function touchStarted() {
             scene[state].play();
         } else if (!playing && showpic){
             state= 2;
+            scene[state].play();
+            scene[state].pause();
             blink=true;
             showpic=false;
         } else{
@@ -402,6 +415,7 @@ function rotateWheel() {
     }
 
     if (playing) {
+
         rY = rotationY + 180;
         pRY = pRotationY + 180;
         if ((rY - pRY > 0 && rY - pRY < 180) || rY - pRY < -180) {
@@ -425,12 +439,14 @@ function rotateWheel() {
 
     if(round(scene[state].time())==endState){
         fill(0,255,100);
-        textSize(40);
-        rotateDirection="Press button to next step.";
+        textSize(30);
+        rotateDirection="Press button to go next";
         scene[state].pause();
-        alpha=100;
+        //        alpha=100;
+        blink=true;
         if(mouseIsPressed){
             state++;
+            textSize(50);
             console.log(state);
             playing=false; 
         }
