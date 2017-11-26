@@ -37,7 +37,7 @@ function setup() {
     textSize(50);
     fill("BLACK");
     noStroke();
-    text("LOADING...", innerWidth/2,innerHeight/2);
+    text("fullscreen", innerWidth/2,innerHeight/2);
     /////////
     for(var i=1; i<7; i++){
         console.log("video loaded: "+i);
