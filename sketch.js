@@ -176,7 +176,7 @@ function draw() {
         text(rotateDirection,windowWidth/2+50, windowHeight/2 - 50);
         textSize(50);
         fill(color, 0, 0, 255);
-        if(scene[state].time()>=4 && round(scene[state].time())<=round(scene[state].duration()){
+        if(scene[state].time()>=4 && round(scene[state].time())<=round(scene[state].duration())){
             text("degree" + ": " + round(scene[state].time()*45/scene[state].duration()), 50, 150);
         } else if(round(scene[state].time())==round(scene[state].duration()) ){
              text("degree" + ": 45 ", 50, 150);
