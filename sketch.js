@@ -170,11 +170,12 @@ function draw() {
         console.log("in 2");
         console.log("video time: "+round(scene[state].time()));
         password.remove();
-        fill(color, 0, 0, 255);
+        fill(color, color, 0, 255);
         rect(0,windowHeight/2-320,windowWidth, 40);
         textAlign(LEFT);
         text(rotateDirection,windowWidth/2+50, windowHeight/2 - 50);
         textSize(50);
+        fill(color, 0, 0, 255);
         if(scene[state].time()>=4){
             text("degree" + ": " + round(scene[state].time()*45/scene[state].duration()), 50, 150);
         }
