@@ -176,8 +176,10 @@ function draw() {
         text(rotateDirection,windowWidth/2+50, windowHeight/2 - 50);
         textSize(50);
         fill(color, 0, 0, 255);
-        if(scene[state].time()>=4){
+        if(scene[state].time()>=4 && round(scene[state].time())<=round(scene[state].duration()){
             text("degree" + ": " + round(scene[state].time()*45/scene[state].duration()), 50, 150);
+        } else if(round(scene[state].time())==round(scene[state].duration()) ){
+             text("degree" + ": 45 ", 50, 150);
         }
     }else if (state==3){
         image(scene[state],windowWidth / 2, windowHeight / 2);
@@ -416,7 +418,6 @@ function rotateWheel() {
     }
 
     if (playing) {
-
         rY = rotationY + 180;
         pRY = pRotationY + 180;
         if ((rY - pRY > 0 && rY - pRY < 180) || rY - pRY < -180) {
@@ -443,13 +444,12 @@ function rotateWheel() {
         textSize(30);
         rotateDirection="Press button to go next";
         scene[state].pause();
-        //        alpha=100;
         blink=true;
+        playing=false; 
         if(mouseIsPressed){
             state++;
             textSize(50);
             console.log(state);
-            playing=false; 
         }
     }
 
@@ -542,6 +542,23 @@ function blinking(){
         alpha = 0;
     }
 }
+
+
+function hideAddressBar()
+{
+  if(!window.location.hash)
+  {
+      if(document.height < window.outerHeight)
+      {
+          document.body.style.height = (window.outerHeight + 50) + 'px';
+      }
+
+      setTimeout( function(){ window.scrollTo(0, 1); }, 50 );
+  }
+}
+
+window.addEventListener("load", function(){ if(!window.pageYOffset){ hideAddressBar(); } } );
+window.addEventListener("orientationchange", hideAddressBar );
 //function mousePressed() {
 //    if(state==1 ||state==2){
 //        if (mouseX > (windowWidth / 2) - 100 && mouseX < (windowWidth / 2) + 50) {
